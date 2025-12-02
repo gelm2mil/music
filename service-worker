@@ -1,0 +1,54 @@
+const CACHE_NAME = "nerox-cache-v3";
+
+const PRECACHE = [
+  "./",
+  "./index.html",
+  "./canciones.json",
+  "./nerox.png",
+];
+
+// INSTALAR SW
+self.addEventListener("install", e => {
+  e.waitUntil(
+    caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE))
+  );
+  self.skipWaiting();
+});
+
+// ACTIVAR SW
+self.addEventListener("activate", e => {
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+    )
+  );
+  self.clients.claim();
+});
+
+// FETCH (modo híbrido cache + red)
+self.addEventListener("fetch", e => {
+  const url = new URL(e.request.url);
+
+  // MP3 en modo “cache-first” pero baja desde red si no existe
+  if (url.pathname.endsWith(".mp3")) {
+    e.respondWith(
+      caches.match(e.request).then(res => {
+        return res || fetch(e.request).then(netRes => {
+          caches.open(CACHE_NAME).then(c => c.put(e.request, netRes.clone()));
+          return netRes;
+        });
+      })
+    );
+    return;
+  }
+
+  // todo lo demás: network-first
+  e.respondWith(
+    fetch(e.request)
+      .then(netRes => {
+        caches.open(CACHE_NAME).then(c => c.put(e.request, netRes.clone()));
+        return netRes;
+      })
+      .catch(() => caches.match(e.request))
+  );
+});
