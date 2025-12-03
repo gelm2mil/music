@@ -1,242 +1,162 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>GELM · Reproductor Neon</title>
-
-  <!-- Manifest PWA -->
-  <link rel="manifest" href="manifest.webmanifest">
-
-  <!-- Colores del navegador -->
-  <meta name="theme-color" content="#000000" />
-
-  <!-- Estilos -->
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<div class="page-wrap">
-  <div class="center">
-
-    <!-- TÍTULO / CABECERA -->
-    <header class="header">
-      🎧 GELM · Música Variada Neon
-    </header>
-
-    <!-- VISUALIZADOR -->
-    <section class="eq-frame">
-      <canvas id="viz"></canvas>
-    </section>
-
-    <!-- SUPERFICIE DEL PLAYER -->
-    <section class="audio-wrap">
-      <div class="player-surface" id="playerSurface">
-
-        <!-- Icono “bocina arcoiris” -->
-        <div class="sound-orb">
-          <div class="sound-orb-inner"></div>
-        </div>
-
-        <!-- Barra de progreso -->
-        <div class="progress-wrap">
-          <div id="progress" class="progress"></div>
-        </div>
-
-        <!-- Tiempo -->
-        <div class="time" id="timeText">00:00 / 00:00</div>
-
-        <!-- Controles -->
-        <div class="controls-row">
-          <button id="prev" class="btn">⟵ Anterior</button>
-          <button id="playPause" class="btn btn-main">▶︎</button>
-          <button id="next" class="btn">Siguiente ⟶</button>
-          <button id="shuffleBtn" class="btn btn-outline">Shuffle: ON</button>
-        </div>
-
-        <audio id="audio" crossorigin="anonymous"></audio>
-      </div>
-    </section>
-
-    <!-- SELECTOR DE CANCIONES -->
-    <section>
-      <select id="cancion" class="song-select">
-        <option value="">[..:: ELIGE LA CANCIÓN ::..]</option>
-      </select>
-    </section>
-
-    <!-- FRASE -->
-    <section class="phrase-wrapper">
-      <div id="phrase" class="phrase-box">
-        BENDICIDO
-        <div class="phrase-sub">DÍA</div>
-      </div>
-    </section>
-
-    <!-- PIE -->
-    <footer class="footer">
-      2000 - 2040 | BIENVENIDOS | nerox2mil@proton.me<br>
-      att: ---[terry]---
-    </footer>
-
-  </div>
-</div>
-
-<!-- CONTADOR NEROX -->
-<div id="contador">NEROX = 0</div>
-
 <script>
-/* ================= CONTADOR NEROX ================= */
-async function contadorNerox() {
-  try {
-    const res = await fetch("https://api.countapi.xyz/hit/nerox/reproductor");
-    const data = await res.json();
-    document.getElementById("contador").textContent = "NEROX = " + data.value;
-  } catch(e){}
-}
-contadorNerox();
+/* =========================================
+      CONFIG PRINCIPAL (SIN CONTADOR)
+========================================= */
 
-/* ================= VARIABLES ================= */
-const audio = document.getElementById("audio");
-const canvas = document.getElementById("viz");
-const ctx = canvas.getContext("2d");
-const progressEl = document.getElementById("progress");
-const timeText = document.getElementById("timeText");
-const select = document.getElementById("cancion");
-const phrase = document.getElementById("phrase");
+// Elementos
+const audio        = document.getElementById('audio');
+const canvas       = document.getElementById('viz');
+const ctx          = canvas.getContext('2d');
+const progressEl   = document.getElementById('progress');
+const timeText     = document.getElementById('timeText');
+const select       = document.getElementById('cancion');
+const prevBtn      = document.getElementById('prev');
+const nextBtn      = document.getElementById('next');
+const playPauseBtn = document.getElementById('playPause');
+const shuffleBtn   = document.getElementById('shuffleBtn');
 
-/* Visualizer */
-let audioCtx = null, analyser = null, sourceNode = null, dataArray = null;
+// Visualizer
+let audioCtx = null, analyser = null, sourceNode = null;
+let dataArray = null, bufferLength = 0, vizId = null;
 
-/* Playlist */
+// Playlist
 let playlist = [];
 let order = [];
 let currentOrderIndex = 0;
 let shuffleOn = true;
+let firstPlay = false;
 
-/* ================= CARGAR PLAYLIST ================= */
+// ========================
+//  CARGAR JSON (REVISADO)
+// ========================
 async function loadSongsFromJSON(){
   try{
-    const resp = await fetch("./musica.json?" + Date.now());
+    const resp = await fetch('./musica.json', { cache: 'no-cache' });
     const data = await resp.json();
 
-    playlist = data.map(d => ({
-      url: d.url,
-      title: (d.title || "").trim()
-    }));
+    playlist = data.map(d => ({ url: d.url, title: d.title }));
+
+    if(!playlist.length) return;
 
     buildSelect();
+
+    // Crear orden aleatorio desde el inicio
     buildOrderWithStart();
-    playCurrentOrder();
-  }catch(err){
-    console.error("musica.json ERROR", err);
+
+    // No puede reproducir automáticamente, pero deja lista la canción 1
+    audio.src = playlist[order[0]].url;
+    select.value = order[0];
+
+  }catch(e){
+    console.error("Error cargando JSON", e);
   }
 }
 
+// ===============================
+//      CONSTRUIR SELECT
+// ===============================
 function buildSelect(){
   select.innerHTML = '<option value="">[..:: ELIGE LA CANCIÓN ::..]</option>';
   playlist.forEach((s,i)=>{
-    const o = document.createElement("option");
+    const o = document.createElement('option');
     o.value = i;
     o.textContent = s.title;
     select.appendChild(o);
   });
 }
 
-function buildOrderWithStart(startIndex){
-  if(playlist.length===0) return;
+// ===============================
+//    SHUFFLE DE TODA LA VIDA
+// ===============================
+function shuffleArray(a){
+  const arr = a.slice();
+  for(let i = arr.length -1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr;
+}
 
-  let forced = startIndex ?? playlist.findIndex(x =>
-    x.title.toLowerCase().includes("ger")
-  );
-
-  if(forced < 0) forced = 0;
-
-  let others = playlist.map((_,i)=>i).filter(i=>i!==forced);
-  if(shuffleOn) others = shuffleArray(others);
-
-  order = [forced, ...others];
+function buildOrderWithStart(){
+  const base = playlist.map((_,i)=>i);
+  order = shuffleArray(base);
   currentOrderIndex = 0;
 }
 
-function shuffleArray(arr){
-  return arr.sort(()=>Math.random()-0.5);
+// ===============================
+//    CONTROL DE REPRODUCCIÓN
+// ===============================
+function playCurrent(){
+  const idx = order[currentOrderIndex];
+  audio.src = playlist[idx].url;
+  audio.play().catch(()=>{});
 }
 
-select.addEventListener("change", ()=>{
-  if(!select.value) return;
-  buildOrderWithStart(parseInt(select.value));
-  playCurrentOrder();
-});
-
-/* ================= CONTROLES ================= */
-document.getElementById("playPause").onclick = ()=>{
-  audio.paused ? audio.play() : audio.pause();
-};
-document.getElementById("next").onclick = nextSong;
-document.getElementById("prev").onclick = prevSong;
-
-function nextSong(){
+nextBtn.addEventListener('click', ()=>{
   currentOrderIndex++;
   if(currentOrderIndex >= order.length){
     buildOrderWithStart();
     currentOrderIndex = 0;
   }
-  playCurrentOrder();
-}
+  playCurrent();
+});
 
-function prevSong(){
+prevBtn.addEventListener('click', ()=>{
   currentOrderIndex--;
   if(currentOrderIndex < 0) currentOrderIndex = order.length - 1;
-  playCurrentOrder();
-}
+  playCurrent();
+});
 
-function playCurrentOrder(){
-  const idx = order[currentOrderIndex];
-  const song = playlist[idx];
-  audio.src = song.url;
-  select.value = idx;
-  audio.play();
-}
+// Selector
+select.addEventListener('change', function(){
+  const idx = parseInt(this.value,10);
+  if(isNaN(idx)) return;
+  audio.src = playlist[idx].url;
+  audio.play().catch(()=>{});
+});
 
-/* ================= VISUALIZER ================= */
-audio.addEventListener("play", ()=>{
-  if(!audioCtx){
-    audioCtx = new AudioContext();
-    analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 2048;
-    sourceNode = audioCtx.createMediaElementSource(audio);
-    sourceNode.connect(analyser);
-    analyser.connect(audioCtx.destination);
-    dataArray = new Uint8Array(analyser.frequencyBinCount);
-    renderViz();
+// Play/Pause
+playPauseBtn.addEventListener('click', ()=>{
+  if(audio.paused) audio.play().catch(()=>{}); 
+  else audio.pause();
+});
+
+// ===============================
+//   PRIMER CLICK = ARRANCAR TODO
+// ===============================
+document.addEventListener('click', ()=>{
+
+  if(firstPlay) return;
+  firstPlay = true;
+
+  // Reproducir inmediatamente
+  playCurrent();
+
+}, { once:true });
+
+// ===============================
+//      PROGRESO DEL AUDIO
+// ===============================
+audio.addEventListener('timeupdate', ()=>{
+  if(audio.duration){
+    progressEl.style.width = ((audio.currentTime / audio.duration)*100) + "%";
+    timeText.textContent =
+      new Date(audio.currentTime*1000).toISOString().substr(14,5) +
+      " / " +
+      new Date(audio.duration*1000).toISOString().substr(14,5);
   }
 });
 
-function renderViz(){
-  requestAnimationFrame(renderViz);
-  analyser.getByteFrequencyData(dataArray);
+// ===============================
+//   SIGUIENTE AUTOMÁTICO
+// ===============================
+audio.addEventListener('ended', ()=>{
+  nextBtn.click();
+});
 
-  const W = canvas.width = canvas.clientWidth;
-  const H = canvas.height = canvas.clientHeight;
-
-  ctx.clearRect(0,0,W,H);
-  const barWidth = W / 96;
-
-  for(let i=0;i<96;i++){
-    const v = dataArray[i] / 255;
-    const h = v * H * 0.9;
-    ctx.fillStyle = `hsl(${i*3},100%,50%)`;
-    ctx.fillRect(i*barWidth, H-h, barWidth-2, h);
-  }
-}
-
-/* ================= SW ================= */
-if("serviceWorker" in navigator){
-  navigator.serviceWorker.register("./service-worker.js");
-}
-
+// ===============================
+// INICIAR
+// ===============================
 loadSongsFromJSON();
-</script>
 
-</body>
-</html>
+</script>
