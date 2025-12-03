@@ -19,7 +19,7 @@
     --dark-bg: #0d0017;
 }
 
-/* Fondo full neon degradado */
+/* Fondo neon animado */
 body {
     margin: 0;
     padding: 0;
@@ -43,7 +43,7 @@ body {
     border: 4px solid var(--neon-cyan);
     border-radius: 25px;
     padding: 25px;
-    background: rgba(10, 0, 25, 0.45);
+    background: rgba(5, 0, 20, 0.50);
     box-shadow: 0 0 25px var(--neon-cyan), inset 0 0 20px #000;
 }
 
@@ -68,7 +68,7 @@ body {
 /* Visualizador */
 #visual {
     width: 90%;
-    height: 200px;
+    height: 220px;
     background: #000;
     border-radius: 18px;
     margin: 20px auto;
@@ -221,7 +221,7 @@ function loadSong(){
     audio.src = songs[current].url;
     audio.play();
     isPlaying = true;
-    animate();
+    startVisualizer();
 }
 
 /* Botones */
@@ -247,12 +247,13 @@ document.getElementById("shuffle").onclick = ()=>{
 
 /* Progreso */
 audio.ontimeupdate = ()=> {
-    fill.style.width = (audio.currentTime / audio.duration)*100 + "%";
+    if(audio.duration)
+        fill.style.width = (audio.currentTime / audio.duration)*100 + "%";
 };
 
-/* Visualización */
-function animate(){
-    let audioCtx = new AudioContext();
+/* Visualizador */
+function startVisualizer(){
+    let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     let src = audioCtx.createMediaElementSource(audio);
     let analyser = audioCtx.createAnalyser();
 
@@ -266,6 +267,9 @@ function animate(){
         requestAnimationFrame(draw);
         analyser.getByteFrequencyData(buffer);
 
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+
         ctx.clearRect(0,0,canvas.width,canvas.height);
 
         let barWidth = canvas.width / buffer.length;
@@ -277,35 +281,6 @@ function animate(){
     }
     draw();
 }
-</script>
-<script>
-// =========================
-//     PWA INSTALL LOGIC
-// =========================
-let deferredPrompt;
-const installBtn = document.getElementById("installBtn");
-
-installBtn.style.display = "none"; // oculto por defecto
-
-window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.style.display = "inline-block"; // mostrar botón neon
-});
-
-installBtn.addEventListener("click", async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-
-    if (outcome === "accepted") {
-        console.log("User accepted install");
-        installBtn.innerHTML = "✔ INSTALADO";
-        installBtn.style.background = "#00ffcc";
-    }
-
-    deferredPrompt = null;
-});
 </script>
 
 </body>
