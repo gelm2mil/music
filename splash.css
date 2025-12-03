@@ -30,3 +30,44 @@
   0% { opacity:1; }
   100% { opacity:0; visibility:hidden; }
 }
+/* Fondo animado */
+.splash-bg {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, #7b00ff, #000235 70%, #000010);
+  animation: bgMove 6s infinite alternate ease-in-out;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes bgMove {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
+/* Logo animado */
+.splash-logo {
+  width: 180px;
+  height: 180px;
+  opacity: 0;
+  transform: scale(0.7);
+  animation: logoShow 1.6s forwards ease-out;
+  filter: drop-shadow(0 0 25px #00eaff);
+}
+
+@keyframes logoShow {
+  0% { opacity: 0; transform: scale(0.6); }
+  60% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Fade out de la splash */
+.splash-hide {
+  animation: fadeOut 0.8s forwards ease-in;
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; visibility: hidden; }
+}
