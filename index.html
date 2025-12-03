@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -17,7 +17,6 @@
       <!-- Cabecera tipo BBC con logo -->
       <div class="card-header">
         <div class="logo-wrap">
-          <!-- tu logo -->
           <img src="icons/icon-512.png" alt="GELM" class="logo-img">
         </div>
         <div class="header-text">
@@ -29,24 +28,24 @@
         </div>
       </div>
 
-      <!-- Portada / logo grande de la canción -->
+      <!-- Portada -->
       <div class="hero-art">
         <img src="icons/icon-512.png" alt="Portada" id="current-art">
       </div>
 
-      <!-- Info de la canción actual -->
+      <!-- Info canción -->
       <div class="now-playing">
         <div id="current-title" class="track-title">Selecciona una canción…</div>
       </div>
 
-      <!-- Controles principales -->
+      <!-- Controles -->
       <div class="controls-row">
         <button id="play-btn" class="ctrl-btn main-play">▶</button>
         <button id="vol-btn" class="ctrl-btn">🔊</button>
         <button id="next-btn" class="ctrl-btn">☰</button>
       </div>
 
-      <!-- Barra de progreso -->
+      <!-- Progreso -->
       <div class="progress-bar">
         <div id="progress-fill" class="progress-fill"></div>
       </div>
@@ -55,13 +54,11 @@
         <span id="time-total">00:00</span>
       </div>
 
-      <!-- Lista de canciones -->
+      <!-- Lista -->
       <div class="list-header">Lista de canciones</div>
-      <div id="track-list" class="track-list">
-        <!-- aquí se llena con JS -->
-      </div>
+      <div id="track-list" class="track-list"></div>
 
-      <!-- Audio oculto -->
+      <!-- Audio -->
       <audio id="audio"></audio>
 
       <!-- Pie -->
@@ -69,13 +66,11 @@
         2000 - 2040 · BIENVENIDOS · nerox2mil@proton.me<br>
         att: ---[terry]---
       </div>
+
     </div>
   </div>
 
   <script>
-  // ==========================
-  // Utilidades
-  // ==========================
   const fmt = t => {
     if (!t || isNaN(t)) return "00:00";
     const m = Math.floor(t / 60);
@@ -83,9 +78,6 @@
     return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
   };
 
-  // ==========================
-  // Elementos
-  // ==========================
   const audio       = document.getElementById("audio");
   const playBtn     = document.getElementById("play-btn");
   const volBtn      = document.getElementById("vol-btn");
@@ -101,11 +93,6 @@
   let currentIndex = -1;
   let userEverPlayed = false;
 
-  // ==========================
-  // Cargar lista desde musica.json
-  // Formato esperado: [{ "url": "...", "title": "..." }, ...]
-  // Si no hay title se usa nombre.
-  // ==========================
   fetch("musica.json")
     .then(r => r.json())
     .then(data => {
@@ -114,19 +101,13 @@
         title: (t.title || t.nombre || ("Pista " + (i+1))).trim()
       }));
       renderTrackList();
-      // Dejar preparada la primera pero SIN reproducir (modo manual)
-      if (tracks.length > 0) {
-        setCurrentTrack(0, false);
-      }
+      if (tracks.length > 0) setCurrentTrack(0, false);
     })
     .catch(err => {
-      console.error("Error cargando musica.json", err);
       currentTitle.textContent = "Error cargando música";
+      console.error(err);
     });
 
-  // ==========================
-  // Renderizar lista visual
-  // ==========================
   function renderTrackList(){
     trackListEl.innerHTML = "";
     tracks.forEach((t, i) => {
@@ -142,9 +123,8 @@
           <div class="track-name">${t.title}</div>
         </div>
       `;
-      row.addEventListener("click", () => {
-        setCurrentTrack(i, true); // clic = reproducir
-      });
+
+      row.addEventListener("click", () => setCurrentTrack(i, true));
       trackListEl.appendChild(row);
     });
     updateActiveRow();
@@ -158,17 +138,15 @@
     }
   }
 
-  // ==========================
-  // Seleccionar pista
-  // ==========================
   function setCurrentTrack(index, autoplay){
     if (!tracks.length) return;
+
     currentIndex = (index + tracks.length) % tracks.length;
     const track = tracks[currentIndex];
 
     audio.src = track.url;
     currentTitle.textContent = track.title;
-    currentArt.src = "icons/icon-512.png"; // mismo logo para todas
+    currentArt.src = "icons/icon-512.png";
     updateActiveRow();
 
     if (autoplay) {
@@ -180,25 +158,19 @@
     }
   }
 
-  // ==========================
-  // Controles
-  // ==========================
   playBtn.addEventListener("click", () => {
     if (!tracks.length) return;
 
-    // Si nunca ha sonado nada, arrancar la actual
     if (!userEverPlayed) {
       if (currentIndex < 0) setCurrentTrack(0, true);
-      else {
-        audio.play().catch(()=>{});
-        playBtn.textContent = "⏸";
-      }
+      else audio.play();
+      playBtn.textContent = "⏸";
       userEverPlayed = true;
       return;
     }
 
     if (audio.paused) {
-      audio.play().catch(()=>{});
+      audio.play();
       playBtn.textContent = "⏸";
     } else {
       audio.pause();
@@ -208,11 +180,7 @@
 
   nextBtn.addEventListener("click", () => {
     if (!tracks.length) return;
-    if (currentIndex < 0) {
-      setCurrentTrack(0, true);
-    } else {
-      setCurrentTrack(currentIndex + 1, true);
-    }
+    setCurrentTrack(currentIndex + 1, true);
   });
 
   volBtn.addEventListener("click", () => {
@@ -221,17 +189,11 @@
   });
 
   audio.addEventListener("ended", () => {
-    // al terminar, pasa a la siguiente automáticamente
-    if (tracks.length > 0) {
-      setCurrentTrack(currentIndex + 1, true);
-    }
+    setCurrentTrack(currentIndex + 1, true);
   });
 
-  // ==========================
-  // Progreso y tiempos
-  // ==========================
   audio.addEventListener("timeupdate", () => {
-    if (!audio.duration || isNaN(audio.duration)) return;
+    if (!audio.duration) return;
     const pct = (audio.currentTime / audio.duration) * 100;
     progFill.style.width = pct + "%";
     timeCurEl.textContent = fmt(audio.currentTime);
@@ -240,25 +202,21 @@
 
   audio.addEventListener("loadedmetadata", () => {
     timeTotEl.textContent = fmt(audio.duration);
-    timeCurEl.textContent = fmt(0);
+    timeCurEl.textContent = "00:00";
     progFill.style.width = "0%";
   });
 
-  // Click para adelantar en la barra
   document.querySelector(".progress-bar").addEventListener("click", (e) => {
     if (!audio.duration) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
-    const ratio = x / rect.width;
-    audio.currentTime = ratio * audio.duration;
+    audio.currentTime = (x / rect.width) * audio.duration;
   });
 
-  // ==========================
-  // Service Worker PWA
-  // ==========================
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("service-worker.js");
   }
   </script>
+
 </body>
 </html>
