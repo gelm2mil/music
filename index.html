@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
@@ -118,7 +118,7 @@ body{
   box-shadow:0 0 12px var(--azul);
 }
 
-/* Barra progreso personalizada */
+/* Barra progreso */
 .progress-container{
   width:90%;
   margin:10px auto 25px auto;
@@ -174,7 +174,7 @@ input{
 }
 
 /* ===========================================
-   BENDICIDO DÍA (PLAY/PAUSE)
+   BENDICIDO DÍA
    =========================================== */
 .bend{
   width:80%;
@@ -192,7 +192,6 @@ input{
   cursor:pointer;
 }
 
-/* Vibración por audio */
 .bend.vibrar{
   animation:pulse 0.3s infinite alternate;
 }
@@ -274,9 +273,8 @@ function iniciar(){
    CARGAR CANCION
    ===================================== */
 function cargarCancion(){
-  let c = canciones[index];
-  audio.src = c.url;
-  audio.play();
+  audio.src = canciones[index].url;
+  audio.play().catch(()=>{});
 }
 
 /* =====================================
@@ -307,7 +305,6 @@ document.getElementById("shuffle").onclick = ()=>{
    ===================================== */
 bend.onclick = ()=> playbtn.onclick();
 
-/* Vibración animada */
 audio.addEventListener("play", ()=> bend.classList.add("vibrar"));
 audio.addEventListener("pause", ()=> bend.classList.remove("vibrar"));
 
@@ -315,8 +312,9 @@ audio.addEventListener("pause", ()=> bend.classList.remove("vibrar"));
    BARRA PROGRESO
    ===================================== */
 audio.addEventListener("timeupdate", ()=>{
-  let pct = (audio.currentTime / audio.duration)*100;
-  progress.style.width = pct+"%";
+  if(audio.duration){
+    progress.style.width = (audio.currentTime / audio.duration * 100)+"%";
+  }
 });
 
 /* =====================================
@@ -324,21 +322,29 @@ audio.addEventListener("timeupdate", ()=>{
    ===================================== */
 document.getElementById("buscador").addEventListener("input", e=>{
   let t = e.target.value.toLowerCase();
-  let pos = canciones.findIndex(x => x.nombre.toLowerCase().includes(t));
+  let pos = canciones.findIndex(x => x.title.toLowerCase().includes(t));
   if(pos>=0){ index = pos; cargarCancion(); }
 });
 
 /* =====================================
    CANVAS VISUALIZER
    ===================================== */
-let ctx = new AudioContext();
-let src = ctx.createMediaElementSource(audio);
-let anal = ctx.createAnalyser();
+let ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
+let src = ctxAudio.createMediaElementSource(audio);
+let anal = ctxAudio.createAnalyser();
 src.connect(anal);
-anal.connect(ctx.destination);
+anal.connect(ctxAudio.destination);
 
 let canvas = document.getElementById("canvas");
 let c = canvas.getContext("2d");
+
+function ajustarCanvas(){
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
+ajustarCanvas();
+window.addEventListener("resize", ajustarCanvas);
+
 anal.fftSize = 256;
 let buffer = new Uint8Array(anal.frequencyBinCount);
 
@@ -360,11 +366,7 @@ function draw(){
 }
 draw();
 
-canvas.width = canvas.offsetWidth;
-canvas.height = canvas.offsetHeight;
-
 </script>
-
 
 <script>
 /* SERVICE WORKER */
