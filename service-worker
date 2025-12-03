@@ -1,31 +1,22 @@
-const CACHE = "gelm-music-v1";
-const FILES = [
-  "/music/",
-  "/music/index.html",
-  "/music/styles.css",
-  "/music/manifest.webmanifest",
-  "/music/musica.json",
-  "/music/service-worker.js",
-  "/music/icons/icon-192.png",
-  "/music/icons/icon-512.png"
-];
-
-self.addEventListener("install", e => {
-  e.waitUntil(
-    caches.open(CACHE).then(cache => cache.addAll(FILES))
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches.open("gelm-music-v1").then((cache) => {
+      return cache.addAll([
+        "/music/",
+        "/music/index.html",
+        "/music/musica.json",
+        "/music/styles.css",
+        "/music/icons/icon-192.png",
+        "/music/icons/icon-512.png"
+      ]);
+    })
   );
 });
 
-self.addEventListener("activate", e => {
-  e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.map(k => (k === CACHE ? null : caches.delete(k))))
-    )
-  );
-});
-
-self.addEventListener("fetch", e => {
-  e.respondWith(
-    caches.match(e.request).then(resp => resp || fetch(e.request))
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    caches.match(event.request).then((resp) => {
+      return resp || fetch(event.request);
+    })
   );
 });
