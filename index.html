@@ -17,7 +17,8 @@
       <!-- Cabecera tipo BBC con logo -->
       <div class="card-header">
         <div class="logo-wrap">
-          <img src="icons/icon-512.png" alt="GELM" class="logo-img">
+          <!-- ⬅️ AQUI SOLO AGREGAMOS EL ID -->
+          <img id="logo-mini" src="icons/icon-512.png" alt="GELM" class="logo-img">
         </div>
         <div class="header-text">
           <div class="station-name">Música Variada</div>
@@ -99,6 +100,9 @@
   const timeCurEl   = document.getElementById("time-current");
   const timeTotEl   = document.getElementById("time-total");
 
+  // ⭐ ELEMENTO DEL LOGO PARA EL EFECTO
+  const gelmLogo = document.getElementById("logo-mini");
+
   let tracks = [];
   let currentIndex = -1;
   let userEverPlayed = false;
@@ -120,7 +124,6 @@
       renderTrackList();
 
       if (tracks.length > 0) {
-        // si shuffle está activo → inicia aleatorio
         if (shuffleMode) {
           currentIndex = getRandomIndex(true);
         } else {
@@ -167,22 +170,19 @@
   }
 
   // ==========================
-  // FUNCIÓN ALEATORIA CORRECTA
+  // FUNCIÓN ALEATORIA
   // ==========================
   function getRandomIndex(firstLoad = false){
     if (tracks.length <= 1) return 0;
-
     let newIndex = currentIndex;
-
     while (newIndex === currentIndex) {
       newIndex = Math.floor(Math.random() * tracks.length);
     }
-
     return newIndex;
   }
 
   // ==========================
-  // CAMBIAR DE PISTA
+  // CAMBIAR PISTA
   // ==========================
   function setCurrentTrack(index, autoplay){
     currentIndex = (index + tracks.length) % tracks.length;
@@ -224,8 +224,17 @@
     }
   });
 
+  // ⭐ EFECTO NEÓN EN LOGO
+  audio.addEventListener("play", ()=> {
+    gelmLogo.style.filter = "drop-shadow(0 0 12px #00eaff)";
+  });
+
+  audio.addEventListener("pause", ()=> {
+    gelmLogo.style.filter = "none";
+  });
+
   // ==========================
-  // BOTÓN NEXT / SIGUIENTE
+  // NEXT
   // ==========================
   nextBtn.addEventListener("click", () => {
     if (shuffleMode) {
@@ -236,14 +245,12 @@
   });
 
   // ==========================
-  // BOTÓN SHUFFLE
+  // SHUFFLE
   // ==========================
   shuffleBtn.addEventListener("click", () => {
     shuffleMode = !shuffleMode;
     shuffleBtn.classList.toggle("active");
-
-    if (shuffleMode) shuffleBtn.textContent = "🔀";
-    else shuffleBtn.textContent = "➡️";
+    shuffleBtn.textContent = shuffleMode ? "🔀" : "➡️";
   });
 
   // ==========================
@@ -255,7 +262,7 @@
   });
 
   // ==========================
-  // CUANDO TERMINA UNA CANCIÓN
+  // CUANDO TERMINA
   // ==========================
   audio.addEventListener("ended", () => {
     if (shuffleMode) {
@@ -283,7 +290,7 @@
   });
 
   // ==========================
-  // BARRA CLICKABLE
+  // CLICK EN BARRA
   // ==========================
   document.querySelector(".progress-bar").addEventListener("click", (e) => {
     if (!audio.duration) return;
