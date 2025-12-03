@@ -1,357 +1,228 @@
-:root{
-  --green:  #00ff22;
-  --blue:   #00eaff;
-  --violet: #b300ff;
-  --player-width: 980px;
-  --pulse: 1;
+/* ===================================================
+   PALETA NEÓN OFICIAL
+   =================================================== */
+:root {
+  --azul: #00eaff;
+  --rosa: #ff00d4;
+  --morado: #7b00ff;
+  --verde: #00ff99;
+  --cyan: #00f6ff;
 }
 
-/* RESETEO */
-*{ box-sizing:border-box; margin:0; padding:0; }
-
-html,body{
-  height:100%;
-  font-family:"Verdana",Arial,sans-serif;
-}
-
-/* FONDO GENERAL */
+/* ===================================================
+   FONDO NEÓN TÚNEL ANIMADO (OPCIÓN 3)
+   =================================================== */
 body{
-  color:#ffffff;
+  margin:0;
+  font-family: Verdana, sans-serif;
+  color:white;
   text-align:center;
-  border:12px solid #00ffe6;
-  background:
-    radial-gradient(circle at top, #2b0033 0%, #000000 60%, #050505 100%);
-  box-shadow:
-    inset 0 0 30px rgba(0,255,230,0.5),
-    0 0 80px rgba(0,255,230,0.25);
-  animation:fondoGlow 4s infinite alternate;
-}
-@keyframes fondoGlow {
-  0%{
-    box-shadow:
-      inset 0 0 26px rgba(0,255,230,0.55),
-      0 0 40px rgba(0,255,230,0.25);
-  }
-  100%{
-    box-shadow:
-      inset 0 0 90px rgba(255,0,255,0.6),
-      0 0 90px rgba(255,0,255,0.45);
-  }
+
+  background: radial-gradient(circle at 50% 50%,
+              #7b00ff,
+              #4a0090,
+              #0b0030,
+              #020012);
+  animation:fondoMove 18s infinite alternate ease-in-out;
+  background-size:200% 200%;
 }
 
-/* CONTENEDOR PRINCIPAL */
-.page-wrap{
-  min-height:100vh;
-  padding:26px 16px 34px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
-.center{
-  width:100%;
-  max-width:var(--player-width);
-  margin:0 auto;
-  background:rgba(0,0,0,0.96);
-  border-radius:18px;
-  padding:20px 18px 26px;
-  border:3px solid #00ffe6;
-  box-shadow:
-    0 0 28px rgba(0,255,230,0.55),
-    0 0 90px rgba(0,0,0,0.9);
+@keyframes fondoMove {
+  0% { background-position:0% 0%; }
+  100% { background-position:100% 100%; }
 }
 
-/* CABECERA */
+/* ===================================================
+   CONTENEDOR PRINCIPAL NEÓN
+   =================================================== */
+.contenedor{
+  width:90%;
+  max-width:850px;
+  margin:40px auto;
+  padding:28px;
+  border-radius:25px;
+
+  background:rgba(8, 8, 20, 0.65);
+
+  box-shadow:
+    0 0 20px var(--cyan),
+    0 0 40px rgba(0,255,255,0.4),
+    inset 0 0 20px rgba(255,0,220,0.4);
+
+  backdrop-filter:blur(4px);
+}
+
+/* ===================================================
+   TÍTULO + ICONOS
+   =================================================== */
+
 .header{
-  color:var(--green);
-  font-weight:700;
-  font-size:18px;
-  text-shadow:0 0 8px rgba(0,255,34,0.7),
-               0 0 18px rgba(0,255,160,0.6);
-  margin-bottom:14px;
-}
-
-/* VISUALIZADOR */
-.eq-frame{
-  width:100%;
-  background:#000;
-  padding:16px;
-  border-radius:16px;
-  border:3px solid #ff0033;
-  box-shadow:
-    0 10px 40px rgba(179,0,0, calc(0.10 * var(--pulse))),
-    0 0 14px rgba(255,40,80, calc(0.23 * var(--pulse))),
-    inset 0 0 18px rgba(255,0,50, calc(0.08 * var(--pulse)));
-  margin:6px auto 18px;
-  transition: box-shadow .12s linear;
-}
-#viz{
-  display:block;
-  width:100%;
-  height:240px;
-  background:transparent;
-  border-radius:6px;
-}
-
-/* PLAYER */
-.audio-wrap{
-  margin:18px 0 8px;
   display:flex;
-  justify-content:center;
-}
-.player-surface{
-  position:relative;
-  background:radial-gradient(circle at top, #02040a 0%, #000000 60%);
-  border-radius:24px;
-  padding:18px 20px 18px;
-  display:inline-block;
-  box-shadow:
-    0 6px 20px rgba(0,0,0,0.9),
-    0 0 16px rgba(0,255,200,0.55);
-  border:2px solid rgba(0,255,230,0.95);
-  cursor:pointer;
-}
-
-/* AUDIO REAL (OCULTO) */
-audio{
-  width:0;
-  height:0;
-  opacity:0;
-  pointer-events:none;
-}
-
-/* ORB / BOCINA ARCOIRIS */
-.sound-orb{
-  position:absolute;
-  top:-14px;
-  left:18px;
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  background:conic-gradient(from 0deg,
-    #ff0033,#ffd200,#00ff22,#00eaff,#b300ff,#ff0033);
-  box-shadow:0 0 20px rgba(0,255,230,0.8);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:.4;
-  transition:opacity .12s, transform .12s;
-}
-.sound-orb-inner{
-  width:60%;
-  height:60%;
-  border-radius:50%;
-  background:#000;
-}
-.sound-orb-on{
-  opacity:1;
-  animation:soundPulse 1.2s infinite;
-}
-@keyframes soundPulse{
-  0%{ transform:scale(1); }
-  50%{ transform:scale(1.18); }
-  100%{ transform:scale(1); }
-}
-
-/* BARRA PROGRESO CUSTOM */
-.progress-wrap{
-  width:78%;
-  max-width:780px;
-  height:14px;
-  background:rgba(0,0,0,0.8);
-  margin:6px auto 4px;
-  border-radius:999px;
-  border:2px solid rgba(0,255,230,0.3);
-  overflow:hidden;
-  box-shadow:0 0 16px rgba(0,255,230,0.45);
-}
-.progress{
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,#ff0033,#ffd200,#b24bff,#0044ff,#00ff66);
-  background-size:500% 100%;
-  transition:width .1s linear;
-}
-
-/* TIEMPO */
-.time{
-  text-align:center;
-  color:#00ffbf;
-  font-family:monospace;
-  margin-top:4px;
-  font-size:13px;
-  text-shadow:0 0 6px rgba(0,255,191,0.4);
-}
-
-/* BOTONES */
-.controls-row{
-  display:flex;
-  gap:12px;
   justify-content:center;
   align-items:center;
-  margin:10px 0 0;
-}
-.btn{
-  background: radial-gradient(circle at top,
-              #00ffe6 0%,
-              #00a4ff 45%,
-              #00264d 100%);
-  border:none;
-  color:#000;
-  padding:8px 16px;
-  border-radius:22px;
-  cursor:pointer;
-  font-weight:700;
-  font-size:13px;
-  text-shadow:0 0 4px rgba(255,255,255,0.5);
-  box-shadow:
-    0 0 12px rgba(0,255,230,0.9),
-    0 0 24px rgba(0,164,255,0.6);
-  transition:transform .12s ease-out, box-shadow .12s ease-out, filter .12s;
-}
-.btn:hover{
-  transform:translateY(-1px) scale(1.04);
-  box-shadow:
-    0 0 18px rgba(0,255,230,1),
-    0 0 34px rgba(0,164,255,0.9);
-  filter:brightness(1.1);
-}
-.btn:active{
-  transform:translateY(1px) scale(0.97);
-}
-.btn-main{
-  padding:9px 22px;
-  font-size:16px;
-}
-.btn-outline{
-  background:transparent;
-  color:#00ffe6;
-  border:2px solid #00ffe6;
-  box-shadow:0 0 12px rgba(0,255,230,0.8);
+  gap:25px;
+  margin-bottom:25px;
 }
 
-/* SELECT CANCIONES */
-.song-select{
-  display:block;
-  margin:18px auto 18px;
-  width:60%;
-  min-width:260px;
-  height:40px;
-  background:#000;
-  color:#00ffbf;
-  padding:8px 12px;
-  border-radius:999px;
-  border:2px solid #00ffe6;
-  font-family:Verdana,monospace;
-  font-size:14px;
-  box-shadow:0 0 16px rgba(0,255,230,0.5);
-  outline:none;
-}
-.song-select:focus{
-  border-color:#00ffbf;
-  box-shadow:0 0 22px rgba(0,255,191,0.8);
-}
-
-/* FRASE “FUEGO” */
-.phrase-wrapper{
-  width:100%;
+.icon-circulo{
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  background: radial-gradient(circle, var(--cyan), #004d66);
+  box-shadow:0 0 25px var(--cyan), inset 0 0 20px var(--cyan);
   display:flex;
   justify-content:center;
-  margin-top:28px;
-  margin-bottom:26px;
-}
-.phrase-box{
-  width:72%;
-  min-width:320px;
-  background:rgba(0,0,0,0.96);
-  padding:26px;
-  border-radius:16px;
-  color:#fff;
-  font-size:30px;
-  font-weight:800;
-  letter-spacing:6px;
-  text-align:center;
-  border:3px solid rgba(0,255,230,0.9);
-  box-shadow:
-    0 10px 30px rgba(0,0,0,0.8),
-    0 0 34px rgba(0,255,230, calc(0.20 * var(--pulse)));
-  transition: box-shadow .12s linear,
-              transform .12s linear,
-              text-shadow .12s linear;
-}
-.phrase-sub{
-  margin-top:12px;
-  color:var(--green);
-  font-size:14px;
-  text-shadow:0 0 6px rgba(0,255,34,0.6);
-}
-
-/* FOOTER */
-.footer{
-  margin-top:4px;
-  color:var(--green);
-  text-align:center;
+  align-items:center;
   font-size:12px;
-  text-shadow:0 0 6px rgba(0,255,34,0.4);
-}
-
-/* CONTADOR NEROX */
-#contador {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: rgba(0,0,0,0.85);
-  padding: 12px 25px;
-  color: #00ff00;
-  border: 3px solid #00ff00;
-  font-size: 18px;
-  border-radius: 12px;
-  text-shadow: 0 0 12px #00ff00;
-  box-shadow: 0 0 30px #00ff00;
-  animation: pulso 1.5s infinite alternate;
-  z-index: 9999;
-}
-@keyframes pulso {
-  0%   { transform: scale(1); }
-  100% { transform: scale(1.12); }
-}
-
-/* RESPONSIVE */
-@media (max-width:900px){
-  :root{--player-width:95vw;}
-  #viz{height:160px;}
-  .phrase-box{
-    font-size:20px;
-    letter-spacing:4px;
-    padding:16px;
-    width:86%;
-  }
-  .progress-wrap{ width:88%; }
-  .song-select{ width:86%; }
-}
-/* BOTÓN NEÓN INSTALAR PWA */
-.btn-instalar{
-  margin-top:15px;
-  padding:14px 30px;
-  font-size:20px;
   font-weight:bold;
-  border:none;
-  border-radius:18px;
-  cursor:pointer;
-  background: radial-gradient(circle, #00eaff, #005577);
   color:#000;
-  text-shadow:0 0 10px #00ffaa;
+}
+
+.titulo{
+  font-size:32px;
+  font-weight:bold;
+  letter-spacing:5px;
+  background:linear-gradient(90deg, var(--rosa), var(--morado), var(--azul));
+  -webkit-background-clip:text;
+  color:transparent;
+  text-shadow:0 0 12px var(--rosa);
+}
+
+/* ===================================================
+   CANVAS VISUALIZER
+   =================================================== */
+#canvas{
+  width:100%;
+  height:220px;
+  background:black;
+  border-radius:18px;
   box-shadow:
-    0 0 15px #00eaff,
-    0 0 25px #00ffaa,
-    inset 0 0 15px #00ffff;
+    0 0 20px var(--rosa),
+    inset 0 0 18px var(--cyan);
+  margin-bottom:20px;
+}
+
+/* ===================================================
+   PLAYER BOX
+   =================================================== */
+.player-box{
+  padding:18px;
+  border-radius:18px;
+  background:rgba(0,0,0,0.55);
+  box-shadow:0 0 15px var(--cyan);
+}
+
+/* BARRA PROGRESO */
+.progress-container{
+  width:90%;
+  height:12px;
+  background:#000;
+  margin:10px auto 22px auto;
+  border-radius:12px;
+  box-shadow:inset 0 0 10px var(--morado);
+}
+
+.progress{
+  width:0%;
+  height:12px;
+  background:var(--verde);
+  border-radius:12px;
+  box-shadow:0 0 15px var(--verde);
+}
+
+/* ===================================================
+   BOTONES REPRODUCTOR
+   =================================================== */
+.botones{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:18px;
+}
+
+.btn{
+  padding:10px 18px;
+  border:none;
+  border-radius:14px;
+  background: radial-gradient(circle, #0033ff, #001a66);
+  color:white;
+  text-shadow:0 0 8px var(--cyan);
+  box-shadow:0 0 15px var(--cyan);
+  cursor:pointer;
+  font-size:15px;
   transition:0.2s;
 }
 
-.btn-instalar:hover{
-  transform:scale(1.08);
-  box-shadow:
-    0 0 25px #00ffaa,
-    0 0 45px #00eaff,
-    inset 0 0 22px #00ffff;
+.btn:hover{
+  transform:scale(1.07);
+  box-shadow:0 0 20px var(--cyan);
 }
 
+/* ===================================================
+   BUSCADOR
+   =================================================== */
+#buscador{
+  width:80%;
+  padding:12px;
+  margin:22px auto;
+  background:rgba(0,0,0,0.45);
+  border-radius:12px;
+  border:2px solid var(--cyan);
+  box-shadow:0 0 12px var(--cyan);
+  color:white;
+  text-align:center;
+}
+
+/* ===================================================
+   BENDICIDO DÍA = BOTÓN PLAY
+   =================================================== */
+.bend{
+  width:80%;
+  margin:0 auto 25px auto;
+  padding:18px;
+  border-radius:18px;
+  background: radial-gradient(circle, #001a33, #003366);
+  color:white;
+  font-size:32px;
+  letter-spacing:5px;
+  text-shadow:0 0 20px var(--azul);
+  box-shadow:
+    0 0 20px var(--azul),
+    inset 0 0 30px rgba(0,255,255,0.6);
+  cursor:pointer;
+}
+
+/* Vibración cuando suena */
+.bend.vibrar{
+  animation:pulse 0.28s infinite alternate;
+}
+
+@keyframes pulse{
+  0%{ transform:scale(1); text-shadow:0 0 20px var(--azul); }
+  100%{ transform:scale(1.04); text-shadow:0 0 30px var(--azul); }
+}
+
+.dia{
+  font-size:18px;
+  color:var(--verde);
+  text-shadow:0 0 10px var(--verde);
+}
+
+/* ===================================================
+   FOOTER
+   =================================================== */
+.footer{
+  font-size:12px;
+  margin-top:20px;
+  opacity:0.8;
+}
+
+/* ===================================================
+   RESPONSIVE MOVIL
+   =================================================== */
+@media (max-width:600px){
+  .contenedor{ width:94%; padding:18px; }
+  #canvas{ height:180px; }
+  .titulo{ font-size:26px; }
+  .bend{ font-size:28px; }
+}
