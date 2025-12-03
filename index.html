@@ -84,9 +84,12 @@
 </div>
 
 <!-- ================================
-     SCRIPT PLAYER
+     SCRIPT PLAYER COMPLETO
 ================================ -->
 <script>
+// ==========================
+// FORMATEO DE TIEMPO
+// ==========================
 const fmt = t => {
   if (!t || isNaN(t)) return "00:00";
   const m = Math.floor(t / 60);
@@ -94,68 +97,73 @@ const fmt = t => {
   return String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
 };
 
-const audio = document.getElementById("audio");
-const playBtn = document.getElementById("play-btn");
-const volBtn = document.getElementById("vol-btn");
-const nextBtn = document.getElementById("next-btn");
-const shuffleBtn = document.getElementById("shuffle-btn");
-const trackListEl = document.getElementById("track-list");
+// ==========================
+// ELEMENTOS
+// ==========================
+const audio        = document.getElementById("audio");
+const playBtn      = document.getElementById("play-btn");
+const volBtn       = document.getElementById("vol-btn");
+const nextBtn      = document.getElementById("next-btn");
+const shuffleBtn   = document.getElementById("shuffle-btn");
+const trackListEl  = document.getElementById("track-list");
 const currentTitle = document.getElementById("current-title");
-const currentArt = document.getElementById("current-art");
-const progFill = document.getElementById("progress-fill");
-const timeCurEl = document.getElementById("time-current");
-const timeTotEl = document.getElementById("time-total");
-const gelmLogo = document.getElementById("logo-mini");
+const currentArt   = document.getElementById("current-art");
+const progFill     = document.getElementById("progress-fill");
+const timeCurEl    = document.getElementById("time-current");
+const timeTotEl    = document.getElementById("time-total");
+const gelmLogo     = document.getElementById("logo-mini");
 
 let tracks = [];
 let currentIndex = -1;
 let userEverPlayed = false;
 let shuffleMode = true;
 
+// ==========================
+// CARGAR JSON
+// ==========================
 fetch("musica.json")
   .then(r => r.json())
   .then(data => {
-    tracks = data.map((t,i)=>({
-      url: t.url,
-      title: (t.title || t.nombre || ("Pista "+(i+1))).trim()
-    }));
+    tracks = data; // ← YA SOPORTA CATEGORÍAS
+
     renderTrackList();
 
     currentIndex = shuffleMode ? getRandomIndex() : 0;
     setCurrentTrack(currentIndex, false);
   });
 
+// ==========================
+// LISTA CON CATEGORÍAS
+// ==========================
 function renderTrackList() {
   trackListEl.innerHTML = "";
 
   tracks.forEach((t, i) => {
 
-    // ⭐ SI ES CATEGORÍA → CREA EL BANNER
+    // ⭐ SI ES UNA CATEGORÍA
     if (t.category) {
       const cat = document.createElement("div");
       cat.className = "category-banner";
       cat.textContent = t.category;
       trackListEl.appendChild(cat);
-      return; // importante: no crear row para categorías
+      return;
     }
 
-    // ⭐ SI ES UNA CANCIÓN → CREA EL ITEM NORMAL
+    // ⭐ ITEM NORMAL (CANCIÓN)
     const row = document.createElement("div");
     row.className = "track-item";
     row.dataset.index = i;
 
     row.innerHTML = `
       <div class="track-thumb">
-        <img src="icons/icon-512.png" alt="GELM">
+        <img src="icons/icon-512.png">
       </div>
       <div class="track-info">
         <div class="track-name">${t.title}</div>
       </div>
     `;
 
-    row.addEventListener("click", () => {
-      setCurrentTrack(i, true);
-    });
+    row.addEventListener("click", () => setCurrentTrack(i, true));
 
     trackListEl.appendChild(row);
   });
@@ -163,36 +171,32 @@ function renderTrackList() {
   updateActiveRow();
 }
 
-    row.innerHTML = `
-      <div class="track-thumb">
-        <img src="icons/icon-512.png">
-      </div>
-      <div class="track-info">${t.title}</div>
-    `;
-
-    row.addEventListener("click",()=>{
-      setCurrentTrack(i,true);
-    });
-
-    trackListEl.appendChild(row);
-  });
-  updateActiveRow();
-}
-
-function updateActiveRow(){
+// ==========================
+// MARCAR CANCIÓN ACTIVA
+// ==========================
+function updateActiveRow() {
   const rows = trackListEl.querySelectorAll(".track-item");
-  rows.forEach(r=>r.classList.remove("active"));
-  if(rows[currentIndex]) rows[currentIndex].classList.add("active");
+  rows.forEach(r => r.classList.remove("active"));
+  
+  if (rows[currentIndex]) rows[currentIndex].classList.add("active");
 }
 
-function getRandomIndex(){
-  if(tracks.length <= 1) return 0;
+// ==========================
+// RANDOM
+// ==========================
+function getRandomIndex() {
+  if (tracks.length <= 1) return 0;
   let r = currentIndex;
-  while(r === currentIndex) r = Math.floor(Math.random()*tracks.length);
+  while (r === currentIndex || tracks[r].category) {
+    r = Math.floor(Math.random() * tracks.length);
+  }
   return r;
 }
 
-function setCurrentTrack(i, autoplay){
+// ==========================
+// CAMBIAR PISTA
+// ==========================
+function setCurrentTrack(i, autoplay) {
   currentIndex = (i + tracks.length) % tracks.length;
 
   const track = tracks[currentIndex];
@@ -201,7 +205,7 @@ function setCurrentTrack(i, autoplay){
 
   updateActiveRow();
 
-  if(autoplay){
+  if (autoplay) {
     audio.play();
     userEverPlayed = true;
     playBtn.textContent = "⏸";
@@ -210,17 +214,20 @@ function setCurrentTrack(i, autoplay){
   }
 }
 
-playBtn.addEventListener("click",()=>{
-  if(audio.paused){
+// ==========================
+// BOTONES
+// ==========================
+playBtn.addEventListener("click", () => {
+  if (audio.paused) {
     audio.play();
-    playBtn.textContent="⏸";
+    playBtn.textContent = "⏸";
   } else {
     audio.pause();
-    playBtn.textContent="▶";
+    playBtn.textContent = "▶";
   }
 });
 
-// LOGO PULSO
+// ⭐ LOGO PULSANTE
 audio.addEventListener("play", ()=>{
   gelmLogo.classList.add("logo-pulse");
 });
@@ -228,57 +235,65 @@ audio.addEventListener("pause", ()=>{
   gelmLogo.classList.remove("logo-pulse");
 });
 
-nextBtn.addEventListener("click",()=>{
-  shuffleMode ? setCurrentTrack(getRandomIndex(),true)
-              : setCurrentTrack(currentIndex+1,true);
+nextBtn.addEventListener("click", () => {
+  shuffleMode ? setCurrentTrack(getRandomIndex(), true)
+              : setCurrentTrack(currentIndex + 1, true);
 });
 
-shuffleBtn.addEventListener("click",()=>{
+shuffleBtn.addEventListener("click", () => {
   shuffleMode = !shuffleMode;
   shuffleBtn.classList.toggle("active");
   shuffleBtn.textContent = shuffleMode ? "🔀" : "➡️";
 });
 
-volBtn.addEventListener("click",()=>{
+volBtn.addEventListener("click", () => {
   audio.muted = !audio.muted;
   volBtn.textContent = audio.muted ? "🔈" : "🔊";
 });
 
-audio.addEventListener("ended",()=>{
-  shuffleMode ? setCurrentTrack(getRandomIndex(),true)
-              : setCurrentTrack(currentIndex+1,true);
+// ==========================
+// EVENTOS DE AUDIO
+// ==========================
+audio.addEventListener("ended", () => {
+  shuffleMode ? setCurrentTrack(getRandomIndex(), true)
+              : setCurrentTrack(currentIndex + 1, true);
 });
 
-audio.addEventListener("timeupdate",()=>{
-  if(!audio.duration) return;
+audio.addEventListener("timeupdate", () => {
+  if (!audio.duration) return;
   progFill.style.width = (audio.currentTime / audio.duration) * 100 + "%";
   timeCurEl.textContent = fmt(audio.currentTime);
   timeTotEl.textContent = fmt(audio.duration);
 });
 
-audio.addEventListener("loadedmetadata",()=>{
+audio.addEventListener("loadedmetadata", () => {
   timeTotEl.textContent = fmt(audio.duration);
   timeCurEl.textContent = "00:00";
   progFill.style.width = "0%";
 });
 
-// Click barra progreso
-document.querySelector(".progress-bar")
-  .addEventListener("click",e=>{
-    const box = e.currentTarget.getBoundingClientRect();
-    const pct = (e.clientX - box.left) / box.width;
-    audio.currentTime = pct * audio.duration;
-  });
+// ==========================
+// CLICK EN BARRA PROGRESO
+// ==========================
+document.querySelector(".progress-bar").addEventListener("click", e => {
+  const box = e.currentTarget.getBoundingClientRect();
+  const pct = (e.clientX - box.left) / box.width;
+  audio.currentTime = pct * audio.duration;
+});
 
-// Ocultar splash
+// ==========================
+// OCULTAR SPLASH
+// ==========================
 document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     document.getElementById("splash").classList.add("splash-hide");
   }, 900);
 });
 
+// ==========================
 // SERVICE WORKER
-if("serviceWorker" in navigator){
+// ==========================
+if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("service-worker.js");
 }
 </script>
