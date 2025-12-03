@@ -10,6 +10,25 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+<link rel="stylesheet" href="splash.css">
+
+<div id="splash" class="splash-bg">
+
+  <div class="splash-fog"></div>
+  <div class="splash-light"></div>
+  <div class="splash-halo"></div>
+
+  <!-- LOGO -->
+  <img src="icons/icon-512.png" class="splash-logo">
+
+  <!-- Partículas -->
+  <div class="particle" style="left:20%; top:70%; animation-delay:0s;"></div>
+  <div class="particle" style="left:50%; top:80%; animation-delay:1s;"></div>
+  <div class="particle" style="left:70%; top:60%; animation-delay:2s;"></div>
+  <div class="particle" style="left:30%; top:40%; animation-delay:1.5s;"></div>
+  <div class="particle" style="left:60%; top:30%; animation-delay:0.5s;"></div>
+
+</div>
 
   <link rel="stylesheet" href="splash.css">
 
@@ -318,6 +337,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const sp = document.getElementById("splash");
     sp.classList.add("splash-hide");
   }, 2200); // tiempo visible 2.2s
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    document.getElementById("splash").classList.add("splash-hide");
+  }, 2600); // tiempo visible
 });
 </script>
 
