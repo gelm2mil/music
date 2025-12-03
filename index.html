@@ -1,392 +1,281 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Música Variada GELM</title>
-
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#00eaff">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Música Variada – GELM</title>
 
 <style>
-/* ============================================================
-   PALETA NEÓN
-   ============================================================ */
-:root{
-  --azul: #00eaff;
-  --rosa: #ff00d4;
-  --morado: #7b00ff;
-  --verde: #00ff99;
+/* ================================
+   🎨 PALETA NEÓN OFICIAL GELM 2026
+   ================================ */
+:root {
+    --neon-cyan: #00f6ff;
+    --neon-magenta: #ff00ff;
+    --neon-purple: #8a00ff;
+    --neon-blue: #00ccff;
+    --neon-green: #00ff99;
+    --neon-yellow: #ffee55;
+    --dark-bg: #0d0017;
 }
 
-/* ============================================================
-   FONDO NEÓN (OPCIÓN C)
-   ============================================================ */
-body{
-  margin:0;
-  font-family:Verdana;
-  background: radial-gradient(circle at 20% 20%, #7b00ff, #000540 60%, #000010 100%);
-  background-size:200% 200%;
-  animation:fondomove 14s infinite alternate ease-in-out;
-  text-align:center;
-  color:white;
+/* Fondo full neon degradado */
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(120deg, #6a00ff, #3d00b8, #001f74);
+    background-size: 300% 300%;
+    animation: bgMove 20s infinite alternate ease-in-out;
+    font-family: "Verdana", sans-serif;
+    color: white;
+    text-align: center;
 }
 
-@keyframes fondomove{
-  0%{background-position:0% 0%;}
-  100%{background-position:100% 100%;}
+@keyframes bgMove {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
 }
 
-/* ============================================================
-   CONTENEDOR PRINCIPAL NEÓN
-   ============================================================ */
-.contenedor{
-  width:90%;
-  max-width:820px;
-  margin:40px auto;
-  padding:25px;
-  border-radius:20px;
-  background:rgba(5,5,20,0.55);
-  box-shadow:
-    0 0 15px var(--azul),
-    inset 0 0 20px rgba(255,0,200,0.4),
-    inset 0 0 28px rgba(0,255,255,0.4);
+/* Marco central */
+#player-box {
+    width: 82%;
+    margin: 40px auto;
+    border: 4px solid var(--neon-cyan);
+    border-radius: 25px;
+    padding: 25px;
+    background: rgba(10, 0, 25, 0.45);
+    box-shadow: 0 0 25px var(--neon-cyan), inset 0 0 20px #000;
 }
 
-/* ============================================================
-   TÍTULO + ÍCONOS NEÓN
-   ============================================================ */
-.header{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:30px;
-  margin-bottom:20px;
+/* Títulos neón */
+.title {
+    font-size: 33px;
+    letter-spacing: 3px;
+    color: var(--neon-magenta);
+    text-shadow: 0 0 8px var(--neon-magenta), 0 0 20px var(--neon-magenta);
 }
 
-.icon-neon{
-  width:52px;
-  height:52px;
-  border-radius:50%;
-  background: radial-gradient(circle, var(--azul), #004d66);
-  color:#000;
-  font-weight:bold;
-  font-size:12px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  box-shadow:0 0 20px var(--azul), inset 0 0 20px var(--azul);
+.neon-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    margin: 10px;
+    border-radius: 50px;
+    background: var(--neon-blue);
+    box-shadow: 0 0 15px var(--neon-blue);
+    font-weight: bold;
 }
 
-.titulo{
-  font-size:32px;
-  font-weight:bold;
-  letter-spacing:4px;
-  background: linear-gradient(90deg, var(--rosa), var(--morado), var(--azul));
-  -webkit-background-clip:text;
-  color:transparent;
-  text-shadow:0 0 15px var(--rosa);
-}
-
-/* ============================================================
-   VISUALIZADOR
-   ============================================================ */
-#canvas{
-  width:100%;
-  height:200px;
-  background:black;
-  border-radius:20px;
-  box-shadow:
-    0 0 15px var(--rosa),
-    inset 0 0 15px var(--azul);
-  margin-bottom:18px;
-}
-
-/* ============================================================
-   PLAYER BOX
-   ============================================================ */
-.player{
-  padding:16px;
-  background:#00000088;
-  border-radius:18px;
-  box-shadow:0 0 15px var(--azul);
-  margin-bottom:25px;
+/* Visualizador */
+#visual {
+    width: 90%;
+    height: 200px;
+    background: #000;
+    border-radius: 18px;
+    margin: 20px auto;
+    box-shadow: 0 0 12px #ff006e, inset 0 0 18px #001;
 }
 
 /* Barra progreso */
-.progress-container{
-  width:90%;
-  height:10px;
-  background:#000;
-  margin:0 auto 18px auto;
-  border-radius:10px;
-  box-shadow: inset 0 0 12px var(--morado);
+#progress {
+    width: 80%;
+    height: 10px;
+    margin: 15px auto;
+    background: #222;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+}
+#progress-fill {
+    width: 0%;
+    height: 100%;
+    background: var(--neon-green);
+    box-shadow: 0 0 12px var(--neon-green);
 }
 
-.progress{
-  width:0%;
-  height:100%;
-  border-radius:10px;
-  background:var(--verde);
-  box-shadow:0 0 12px var(--verde);
+/* Botones */
+.btn {
+    padding: 10px 22px;
+    margin: 10px;
+    border-radius: 25px;
+    border: none;
+    background: var(--neon-blue);
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 0 14px var(--neon-blue);
+    transition: 0.2s;
+}
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 22px var(--neon-blue);
 }
 
-/* ============================================================
-   BOTONES PLAYER
-   ============================================================ */
-.botones{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:18px;
+/* Buscador */
+#search {
+    width: 60%;
+    padding: 10px;
+    border: 2px solid var(--neon-cyan);
+    border-radius: 20px;
+    background: #00000070;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    box-shadow: 0 0 12px var(--neon-cyan);
 }
 
-.btn{
-  padding:10px 18px;
-  border:none;
-  border-radius:14px;
-  background: radial-gradient(circle, #0033ff, #002266);
-  color:white;
-  cursor:pointer;
-  text-shadow:0 0 10px var(--azul);
-  box-shadow:0 0 15px var(--azul);
-  font-size:14px;
+/* Bendecido Día */
+#bless-box {
+    padding: 25px;
+    width: 70%;
+    margin: 20px auto;
+    border-radius: 20px;
+    background: rgba(0, 60, 90, 0.6);
+    box-shadow: 0 0 20px var(--neon-blue);
+}
+#bless {
+    font-size: 32px;
+    letter-spacing: 7px;
+    text-shadow: 0 0 8px white, 0 0 20px var(--neon-blue);
+}
+#dia {
+    font-size: 18px;
+    color: var(--neon-green);
+    text-shadow: 0 0 8px var(--neon-green);
 }
 
-/* ============================================================
-   BUSCADOR
-   ============================================================ */
-#buscar{
-  width:75%;
-  padding:12px;
-  border-radius:12px;
-  border:2px solid var(--azul);
-  background:#0006;
-  color:white;
-  margin-bottom:22px;
-  text-align:center;
-  box-shadow:0 0 12px var(--azul);
+/* Ajustes Mobile */
+@media (max-width: 600px) {
+    #player-box { width: 95%; padding: 12px; }
+    #visual { height: 170px; }
+    #search { width: 90%; }
 }
-
-/* ============================================================
-   BENDICIDO DÍA = PLAY/PAUSE
-   ============================================================ */
-#bend{
-  width:75%;
-  margin:0 auto 25px auto;
-  padding:18px;
-  border-radius:18px;
-  font-size:28px;
-  letter-spacing:5px;
-  text-shadow:0 0 12px var(--azul);
-  background: radial-gradient(circle, #001a33, #003366);
-  box-shadow:
-    0 0 15px var(--azul),
-    inset 0 0 20px rgba(0,255,255,0.6);
-  cursor:pointer;
-}
-
-#bend.vibrar{
-  animation:pulse 0.28s infinite alternate;
-}
-
-@keyframes pulse{
-  0%{transform:scale(1); text-shadow:0 0 15px var(--azul);}
-  100%{transform:scale(1.04); text-shadow:0 0 22px var(--azul);}
-}
-
-/* ============================================================
-   BOTÓN INSTALAR PWA
-   ============================================================ */
-#btnInstall{
-  display:none;
-  margin:18px auto;
-  padding:12px 30px;
-  border:none;
-  border-radius:16px;
-  font-size:20px;
-  cursor:pointer;
-  background: radial-gradient(circle, var(--azul), #004d66);
-  color:black;
-  font-weight:bold;
-  text-shadow:0 0 10px #00ffaa;
-  box-shadow:
-    0 0 20px var(--azul),
-    0 0 30px #00ffaa,
-    inset 0 0 20px #00ffff;
-}
-
-#btnInstall:hover{
-  transform:scale(1.07);
-}
-
 </style>
 </head>
 
 <body>
 
-<div class="contenedor">
+<div id="player-box">
 
-  <div class="header">
-    <div class="icon-neon">GELM</div>
-    <div class="titulo">MÚSICA VARIADA</div>
-    <div class="icon-neon">GELM</div>
-  </div>
+    <span class="neon-badge">GELM</span>
+    <span class="title">MÚSICA VARIADA</span>
+    <span class="neon-badge">GELM</span>
 
-  <!-- BOTÓN INSTALAR PWA -->
-  <button id="btnInstall">⚡ INSTALAR APP ⚡</button>
+    <!-- Visualizador -->
+    <canvas id="visual"></canvas>
 
-  <!-- VISUALIZADOR -->
-  <canvas id="canvas"></canvas>
-
-  <!-- PLAYER -->
-  <div class="player">
+    <!-- Audio -->
     <audio id="audio"></audio>
 
-    <div class="progress-container">
-      <div id="progress" class="progress"></div>
+    <!-- Barra progreso -->
+    <div id="progress"><div id="progress-fill"></div></div>
+
+    <!-- Botones -->
+    <button class="btn" id="prev">⏮ Anterior</button>
+    <button class="btn" id="playpause">⏯</button>
+    <button class="btn" id="next">Siguiente ⏭</button>
+    <button class="btn" id="shuffle">Shuffle: ON</button>
+
+    <!-- Buscador -->
+    <br>
+    <input id="search" placeholder="buscar canción..." />
+
+    <!-- Bendecido Día -->
+    <div id="bless-box">
+        <div id="bless">BENDICIDO</div>
+        <div id="dia">D Í A</div>
     </div>
-
-    <div class="botones">
-      <button class="btn" id="prev">⏮ Anterior</button>
-      <button class="btn" id="play">⏯</button>
-      <button class="btn" id="next">Siguiente ⏭</button>
-      <button class="btn" id="shuf">Shuffle: ON</button>
-    </div>
-  </div>
-
-  <input id="buscar" placeholder="buscar canción…">
-
-  <div id="bend">
-    B E N D I C I D O <br>
-    <span style="font-size:16px;"> D Í A </span>
-  </div>
-
-  <div style="font-size:12px;">
-    2000 - 2040 | BIENVENIDOS | nerox2mil@proton.me <br>
-    att: ---[terry]---
-  </div>
 
 </div>
 
+<!-- ========================
+     🎵 LÓGICA DEL REPRODUCTOR
+     ======================== -->
 <script>
-/* ============================================================
-   INSTALAR PWA
-   ============================================================ */
-let deferredPrompt;
-const btnInstall = document.getElementById("btnInstall");
-
-window.addEventListener("beforeinstallprompt", (e)=>{
-    e.preventDefault();
-    deferredPrompt = e;
-    btnInstall.style.display = "inline-block";
-});
-
-btnInstall.onclick = async ()=>{
-    deferredPrompt.prompt();
-    const result = await deferredPrompt.userChoice;
-    if(result.outcome === "accepted"){
-        btnInstall.innerText = "✔ INSTALADA";
-    }
-    deferredPrompt = null;
-};
-
-/* ============================================================
-   AUDIO + PLAYLIST DESDE JSON
-   ============================================================ */
 let audio = document.getElementById("audio");
+let canvas = document.getElementById("visual");
+let ctx = canvas.getContext("2d");
 let progress = document.getElementById("progress");
-let buscar = document.getElementById("buscar");
-let bend = document.getElementById("bend");
+let fill = document.getElementById("progress-fill");
 
-let canciones = [];
-let idx = 0;
+let songs = [];
+let current = 0;
+let isPlaying = false;
 let shuffle = true;
 
-/* Cargar JSON */
+/* CARGAR JSON */
 fetch("musica.json")
   .then(r => r.json())
-  .then(d => { canciones = d; iniciar(); });
+  .then(data => {
+      songs = data;
+      startRandom();
+  });
 
-function iniciar(){
-  if(shuffle) idx = Math.floor(Math.random()*canciones.length);
-  cargar();
+/* Iniciar canción aleatoria */
+function startRandom(){
+    current = Math.floor(Math.random() * songs.length);
+    loadSong();
 }
 
-function cargar(){
-  audio.src = canciones[idx].url;
-  audio.play();
+/* Cargar canción */
+function loadSong(){
+    audio.src = songs[current].url;
+    audio.play();
+    isPlaying = true;
+    animate();
 }
 
 /* Botones */
-play.onclick = ()=> audio.paused ? audio.play() : audio.pause();
-
-prev.onclick = ()=>{ idx = (idx-1+canciones.length)%canciones.length; cargar(); };
-next.onclick = ()=>{ idx = (idx+1)%canciones.length; cargar(); };
-
-shuf.onclick = ()=>{
-  shuffle = !shuffle;
-  shuf.innerText = "Shuffle: "+(shuffle?"ON":"OFF");
+document.getElementById("playpause").onclick = ()=>{
+    if(isPlaying){ audio.pause(); isPlaying=false; }
+    else { audio.play(); isPlaying=true; }
 };
 
-/* BENDICIDO DÍA = PLAY/PAUSE */
-bend.onclick = ()=> play.onclick();
-
-audio.onplay = ()=> bend.classList.add("vibrar");
-audio.onpause = ()=> bend.classList.remove("vibrar");
-
-/* Barra progreso */
-audio.ontimeupdate = ()=>{
-  progress.style.width = (audio.currentTime / audio.duration)*100 + "%";
+document.getElementById("next").onclick = ()=> {
+    current = shuffle ? Math.floor(Math.random()*songs.length) : (current+1)%songs.length;
+    loadSong();
 };
 
-/* Buscador */
-buscar.oninput = ()=>{
-  let t = buscar.value.toLowerCase();
-  let pos = canciones.findIndex(x => x.nombre.toLowerCase().includes(t));
-  if(pos>=0){ idx = pos; cargar(); }
+document.getElementById("prev").onclick = ()=> {
+    current = current === 0 ? songs.length-1 : current-1;
+    loadSong();
 };
 
-/* ============================================================
-   VISUALIZADOR
-   ============================================================ */
-let ctx = new AudioContext();
-let src = ctx.createMediaElementSource(audio);
-let anal = ctx.createAnalyser();
-src.connect(anal);
-anal.connect(ctx.destination);
+document.getElementById("shuffle").onclick = ()=>{
+    shuffle = !shuffle;
+    document.getElementById("shuffle").innerText = "Shuffle: " + (shuffle ? "ON" : "OFF");
+};
 
-anal.fftSize = 256;
-let buffer = new Uint8Array(anal.frequencyBinCount);
+/* Progreso */
+audio.ontimeupdate = ()=> {
+    fill.style.width = (audio.currentTime / audio.duration)*100 + "%";
+};
 
-let canvas = document.getElementById("canvas");
-let g = canvas.getContext("2d");
+/* Visualización */
+function animate(){
+    let audioCtx = new AudioContext();
+    let src = audioCtx.createMediaElementSource(audio);
+    let analyser = audioCtx.createAnalyser();
 
-function draw(){
-  requestAnimationFrame(draw);
-  anal.getByteFrequencyData(buffer);
+    src.connect(analyser);
+    analyser.connect(audioCtx.destination);
 
-  g.clearRect(0,0,canvas.width,canvas.height);
+    analyser.fftSize = 256;
+    let buffer = new Uint8Array(analyser.frequencyBinCount);
 
-  let w = canvas.width / buffer.length;
-  for(let i=0;i<buffer.length;i++){
-    let h = buffer[i];
-    let x = w*i;
-    let y = canvas.height - h;
-    g.fillStyle = `hsl(${i*3},100%,50%)`;
-    g.fillRect(x,y,w-1,h);
-  }
-}
-draw();
+    function draw(){
+        requestAnimationFrame(draw);
+        analyser.getByteFrequencyData(buffer);
 
-canvas.width = canvas.offsetWidth;
-canvas.height = canvas.offsetHeight;
+        ctx.clearRect(0,0,canvas.width,canvas.height);
 
-/* ============================================================
-   REGISTRO SERVICE WORKER
-   ============================================================ */
-if("serviceWorker" in navigator){
-  navigator.serviceWorker.register("service-worker.js");
+        let barWidth = canvas.width / buffer.length;
+        for(let i=0;i<buffer.length;i++){
+            let h = buffer[i];
+            ctx.fillStyle = `hsl(${i*2},100%,50%)`;
+            ctx.fillRect(i*barWidth, canvas.height-h, barWidth-2, h);
+        }
+    }
+    draw();
 }
 </script>
 
