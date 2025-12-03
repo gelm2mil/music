@@ -1,174 +1,264 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GELM – Música Variada</title>
 
-<title>GELM – Música Variada</title>
-
-<link rel="manifest" href="manifest.webmanifest" />
-<meta name="theme-color" content="#00ffe6" />
-
-<!-- 🔥 CSS externo para velocidad -->
-<link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#00ffe6" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
 
-<div class="contenedor">
+  <div class="page-bg">
+    <div class="player-card">
 
-  <div class="header">
-      <div class="icon-circulo">GELM</div>
-      <div class="titulo">MÚSICA VARIADA</div>
-      <div class="icon-circulo">GELM</div>
-  </div>
-
-  <canvas id="canvas"></canvas>
-
-  <div class="player-box">
-      <audio id="audio" preload="auto"></audio>
-
-      <div class="progress-container">
-          <div class="progress" id="progress"></div>
+      <!-- Cabecera tipo BBC con logo -->
+      <div class="card-header">
+        <div class="logo-wrap">
+          <!-- tu logo -->
+          <img src="icons/icon-512.png" alt="GELM" class="logo-img">
+        </div>
+        <div class="header-text">
+          <div class="station-name">Música Variada</div>
+          <div class="station-meta">
+            <span class="live-dot"></span>
+            LIVE · BY GELM
+          </div>
+        </div>
       </div>
 
-      <div class="botones">
-        <button class="btn" id="prev">⏮ Anterior</button>
-        <button class="btn" id="playbtn">⏯</button>
-        <button class="btn" id="next">Siguiente ⏭</button>
-        <button class="btn" id="shuffle">Shuffle: ON</button>
+      <!-- Portada / logo grande de la canción -->
+      <div class="hero-art">
+        <img src="icons/icon-512.png" alt="Portada" id="current-art">
       </div>
+
+      <!-- Info de la canción actual -->
+      <div class="now-playing">
+        <div id="current-title" class="track-title">Selecciona una canción…</div>
+      </div>
+
+      <!-- Controles principales -->
+      <div class="controls-row">
+        <button id="play-btn" class="ctrl-btn main-play">▶</button>
+        <button id="vol-btn" class="ctrl-btn">🔊</button>
+        <button id="next-btn" class="ctrl-btn">☰</button>
+      </div>
+
+      <!-- Barra de progreso -->
+      <div class="progress-bar">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+      <div class="time-row">
+        <span id="time-current">00:00</span>
+        <span id="time-total">00:00</span>
+      </div>
+
+      <!-- Lista de canciones -->
+      <div class="list-header">Lista de canciones</div>
+      <div id="track-list" class="track-list">
+        <!-- aquí se llena con JS -->
+      </div>
+
+      <!-- Audio oculto -->
+      <audio id="audio"></audio>
+
+      <!-- Pie -->
+      <div class="footer">
+        2000 - 2040 · BIENVENIDOS · nerox2mil@proton.me<br>
+        att: ---[terry]---
+      </div>
+    </div>
   </div>
 
-  <input id="buscador" placeholder="buscar canción..." />
+  <script>
+  // ==========================
+  // Utilidades
+  // ==========================
+  const fmt = t => {
+    if (!t || isNaN(t)) return "00:00";
+    const m = Math.floor(t / 60);
+    const s = Math.floor(t % 60);
+    return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+  };
 
-  <div id="bend" class="bend">B E N D I C I D O<br><span class="dia">D Í A</span></div>
+  // ==========================
+  // Elementos
+  // ==========================
+  const audio       = document.getElementById("audio");
+  const playBtn     = document.getElementById("play-btn");
+  const volBtn      = document.getElementById("vol-btn");
+  const nextBtn     = document.getElementById("next-btn");
+  const trackListEl = document.getElementById("track-list");
+  const currentTitle= document.getElementById("current-title");
+  const currentArt  = document.getElementById("current-art");
+  const progFill    = document.getElementById("progress-fill");
+  const timeCurEl   = document.getElementById("time-current");
+  const timeTotEl   = document.getElementById("time-total");
 
-  <div class="footer">
-      2000 - 2040 | BIENVENIDOS | nerox2mil@proton.me<br>
-      att: ---[terry]---
-  </div>
+  let tracks = [];
+  let currentIndex = -1;
+  let userEverPlayed = false;
 
-</div>
+  // ==========================
+  // Cargar lista desde musica.json
+  // Formato esperado: [{ "url": "...", "title": "..." }, ...]
+  // Si no hay title se usa nombre.
+  // ==========================
+  fetch("musica.json")
+    .then(r => r.json())
+    .then(data => {
+      tracks = data.map((t, i) => ({
+        url: t.url,
+        title: (t.title || t.nombre || ("Pista " + (i+1))).trim()
+      }));
+      renderTrackList();
+      // Dejar preparada la primera pero SIN reproducir (modo manual)
+      if (tracks.length > 0) {
+        setCurrentTrack(0, false);
+      }
+    })
+    .catch(err => {
+      console.error("Error cargando musica.json", err);
+      currentTitle.textContent = "Error cargando música";
+    });
 
-<script>
-// =====================
-// CARGA JSON
-// =====================
-let canciones = [];
-fetch("musica.json")
-  .then(r => r.json())
-  .then(data => { canciones = data; iniciar(); });
+  // ==========================
+  // Renderizar lista visual
+  // ==========================
+  function renderTrackList(){
+    trackListEl.innerHTML = "";
+    tracks.forEach((t, i) => {
+      const row = document.createElement("div");
+      row.className = "track-item";
+      row.dataset.index = i;
 
-let audio = document.getElementById("audio");
-let progress = document.getElementById("progress");
-let playbtn = document.getElementById("playbtn");
-let bend = document.getElementById("bend");
-
-let index = 0;
-let shuffle = true;
-
-// =====================
-// INICIAR
-// =====================
-function iniciar(){
-  if(shuffle){ index = Math.floor(Math.random()*canciones.length); }
-  cargarCancion();
-}
-
-// =====================
-// CARGAR CANCIÓN
-// =====================
-function cargarCancion(){
-  let c = canciones[index];
-  audio.src = c.url;
-  audio.play();
-}
-
-// =====================
-// BOTONES
-// =====================
-playbtn.onclick = ()=> audio.paused ? audio.play() : audio.pause();
-
-document.getElementById("prev").onclick = ()=>{
-  index = (index - 1 + canciones.length) % canciones.length;
-  cargarCancion();
-}
-
-document.getElementById("next").onclick = ()=>{
-  index = (index + 1) % canciones.length;
-  cargarCancion();
-}
-
-document.getElementById("shuffle").onclick = ()=>{
-  shuffle = !shuffle;
-  document.getElementById("shuffle").innerText = "Shuffle: " + (shuffle?"ON":"OFF");
-}
-
-// =====================
-// BENDICIDO DÍA = PLAY
-// =====================
-bend.onclick = ()=> playbtn.onclick();
-
-audio.addEventListener("play", ()=> bend.classList.add("vibrar"));
-audio.addEventListener("pause", ()=> bend.classList.remove("vibrar"));
-
-// =====================
-// PROGRESO
-// =====================
-audio.addEventListener("timeupdate", ()=>{
-  progress.style.width = (audio.currentTime / audio.duration) * 100 + "%";
-});
-
-// =====================
-// BUSCADOR
-// =====================
-document.getElementById("buscador").addEventListener("input", e=>{
-  let t = e.target.value.toLowerCase();
-  let pos = canciones.findIndex(x => x.nombre.toLowerCase().includes(t));
-  if(pos>=0){ index = pos; cargarCancion(); }
-});
-
-// =====================
-// VISUALIZER OPTIMIZADO
-// =====================
-let ctx = new AudioContext();
-let src = ctx.createMediaElementSource(audio);
-let anal = ctx.createAnalyser();
-src.connect(anal);
-anal.connect(ctx.destination);
-
-anal.fftSize = 128;   // ⚡ más liviano que 256 = más rápido en móviles
-let buffer = new Uint8Array(anal.frequencyBinCount);
-
-let canvas = document.getElementById("canvas");
-let c = canvas.getContext("2d");
-
-function draw(){
-  requestAnimationFrame(draw);
-  anal.getByteFrequencyData(buffer);
-
-  c.clearRect(0,0,canvas.width,canvas.height);
-
-  let w = canvas.width / buffer.length;
-  for(let i=0;i<buffer.length;i++){
-    let h = buffer[i];
-    c.fillStyle = `hsl(${i*5},100%,50%)`;
-    c.fillRect(i*w, canvas.height - h, w-2, h);
+      row.innerHTML = `
+        <div class="track-thumb">
+          <img src="icons/icon-512.png" alt="GELM">
+        </div>
+        <div class="track-info">
+          <div class="track-name">${t.title}</div>
+        </div>
+      `;
+      row.addEventListener("click", () => {
+        setCurrentTrack(i, true); // clic = reproducir
+      });
+      trackListEl.appendChild(row);
+    });
+    updateActiveRow();
   }
-}
-draw();
 
-canvas.width = canvas.offsetWidth;
-canvas.height = canvas.offsetHeight;
+  function updateActiveRow(){
+    const rows = trackListEl.querySelectorAll(".track-item");
+    rows.forEach(r => r.classList.remove("active"));
+    if (currentIndex >= 0 && rows[currentIndex]) {
+      rows[currentIndex].classList.add("active");
+    }
+  }
 
-// =====================
-// SERVICE WORKER
-// =====================
-if("serviceWorker" in navigator){
-  navigator.serviceWorker.register("service-worker.js");
-}
-</script>
+  // ==========================
+  // Seleccionar pista
+  // ==========================
+  function setCurrentTrack(index, autoplay){
+    if (!tracks.length) return;
+    currentIndex = (index + tracks.length) % tracks.length;
+    const track = tracks[currentIndex];
 
+    audio.src = track.url;
+    currentTitle.textContent = track.title;
+    currentArt.src = "icons/icon-512.png"; // mismo logo para todas
+    updateActiveRow();
+
+    if (autoplay) {
+      audio.play().catch(()=>{});
+      userEverPlayed = true;
+      playBtn.textContent = "⏸";
+    } else {
+      playBtn.textContent = "▶";
+    }
+  }
+
+  // ==========================
+  // Controles
+  // ==========================
+  playBtn.addEventListener("click", () => {
+    if (!tracks.length) return;
+
+    // Si nunca ha sonado nada, arrancar la actual
+    if (!userEverPlayed) {
+      if (currentIndex < 0) setCurrentTrack(0, true);
+      else {
+        audio.play().catch(()=>{});
+        playBtn.textContent = "⏸";
+      }
+      userEverPlayed = true;
+      return;
+    }
+
+    if (audio.paused) {
+      audio.play().catch(()=>{});
+      playBtn.textContent = "⏸";
+    } else {
+      audio.pause();
+      playBtn.textContent = "▶";
+    }
+  });
+
+  nextBtn.addEventListener("click", () => {
+    if (!tracks.length) return;
+    if (currentIndex < 0) {
+      setCurrentTrack(0, true);
+    } else {
+      setCurrentTrack(currentIndex + 1, true);
+    }
+  });
+
+  volBtn.addEventListener("click", () => {
+    audio.muted = !audio.muted;
+    volBtn.textContent = audio.muted ? "🔈" : "🔊";
+  });
+
+  audio.addEventListener("ended", () => {
+    // al terminar, pasa a la siguiente automáticamente
+    if (tracks.length > 0) {
+      setCurrentTrack(currentIndex + 1, true);
+    }
+  });
+
+  // ==========================
+  // Progreso y tiempos
+  // ==========================
+  audio.addEventListener("timeupdate", () => {
+    if (!audio.duration || isNaN(audio.duration)) return;
+    const pct = (audio.currentTime / audio.duration) * 100;
+    progFill.style.width = pct + "%";
+    timeCurEl.textContent = fmt(audio.currentTime);
+    timeTotEl.textContent = fmt(audio.duration);
+  });
+
+  audio.addEventListener("loadedmetadata", () => {
+    timeTotEl.textContent = fmt(audio.duration);
+    timeCurEl.textContent = fmt(0);
+    progFill.style.width = "0%";
+  });
+
+  // Click para adelantar en la barra
+  document.querySelector(".progress-bar").addEventListener("click", (e) => {
+    if (!audio.duration) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const ratio = x / rect.width;
+    audio.currentTime = ratio * audio.duration;
+  });
+
+  // ==========================
+  // Service Worker PWA
+  // ==========================
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+  }
+  </script>
 </body>
 </html>
