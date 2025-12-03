@@ -328,3 +328,30 @@ audio{
   .progress-wrap{ width:88%; }
   .song-select{ width:86%; }
 }
+/* BOTÓN NEÓN INSTALAR PWA */
+.btn-instalar{
+  margin-top:15px;
+  padding:14px 30px;
+  font-size:20px;
+  font-weight:bold;
+  border:none;
+  border-radius:18px;
+  cursor:pointer;
+  background: radial-gradient(circle, #00eaff, #005577);
+  color:#000;
+  text-shadow:0 0 10px #00ffaa;
+  box-shadow:
+    0 0 15px #00eaff,
+    0 0 25px #00ffaa,
+    inset 0 0 15px #00ffff;
+  transition:0.2s;
+}
+
+.btn-instalar:hover{
+  transform:scale(1.08);
+  box-shadow:
+    0 0 25px #00ffaa,
+    0 0 45px #00eaff,
+    inset 0 0 22px #00ffff;
+}
+
