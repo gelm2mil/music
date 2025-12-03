@@ -8,6 +8,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <meta name="theme-color" content="#00ffe6" />
 
+  <!-- ESTILOS -->
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="splash.css" />
 </head>
@@ -59,7 +60,7 @@
       <button id="next-btn" class="ctrl-btn">☰</button>
     </div>
 
-    <!-- Barra progreso -->
+    <!-- Barra de progreso -->
     <div class="progress-bar">
       <div id="progress-fill" class="progress-fill"></div>
     </div>
@@ -120,9 +121,7 @@ fetch("musica.json")
     }));
     renderTrackList();
 
-    if (shuffleMode) currentIndex = getRandomIndex();
-    else currentIndex = 0;
-
+    currentIndex = shuffleMode ? getRandomIndex() : 0;
     setCurrentTrack(currentIndex, false);
   });
 
@@ -190,7 +189,7 @@ playBtn.addEventListener("click",()=>{
   }
 });
 
-// LOGO PULSO — EFECTO A
+// LOGO PULSO
 audio.addEventListener("play", ()=>{
   gelmLogo.classList.add("logo-pulse");
 });
@@ -199,8 +198,8 @@ audio.addEventListener("pause", ()=>{
 });
 
 nextBtn.addEventListener("click",()=>{
-  if(shuffleMode) setCurrentTrack(getRandomIndex(),true);
-  else setCurrentTrack(currentIndex+1,true);
+  shuffleMode ? setCurrentTrack(getRandomIndex(),true)
+              : setCurrentTrack(currentIndex+1,true);
 });
 
 shuffleBtn.addEventListener("click",()=>{
@@ -215,8 +214,8 @@ volBtn.addEventListener("click",()=>{
 });
 
 audio.addEventListener("ended",()=>{
-  if(shuffleMode) setCurrentTrack(getRandomIndex(),true);
-  else setCurrentTrack(currentIndex+1,true);
+  shuffleMode ? setCurrentTrack(getRandomIndex(),true)
+              : setCurrentTrack(currentIndex+1,true);
 });
 
 audio.addEventListener("timeupdate",()=>{
@@ -232,6 +231,7 @@ audio.addEventListener("loadedmetadata",()=>{
   progFill.style.width = "0%";
 });
 
+// Click barra progreso
 document.querySelector(".progress-bar")
   .addEventListener("click",e=>{
     const box = e.currentTarget.getBoundingClientRect();
@@ -239,11 +239,11 @@ document.querySelector(".progress-bar")
     audio.currentTime = pct * audio.duration;
   });
 
-// OCULTAR SPLASH
+// Ocultar splash
 document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     document.getElementById("splash").classList.add("splash-hide");
-  }, 800);
+  }, 900);
 });
 
 // SERVICE WORKER
