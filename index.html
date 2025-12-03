@@ -125,12 +125,43 @@ fetch("musica.json")
     setCurrentTrack(currentIndex, false);
   });
 
-function renderTrackList(){
+function renderTrackList() {
   trackListEl.innerHTML = "";
-  tracks.forEach((t,i)=>{
+
+  tracks.forEach((t, i) => {
+
+    // ⭐ SI ES CATEGORÍA → CREA EL BANNER
+    if (t.category) {
+      const cat = document.createElement("div");
+      cat.className = "category-banner";
+      cat.textContent = t.category;
+      trackListEl.appendChild(cat);
+      return; // importante: no crear row para categorías
+    }
+
+    // ⭐ SI ES UNA CANCIÓN → CREA EL ITEM NORMAL
     const row = document.createElement("div");
-    row.className="track-item";
-    row.dataset.index=i;
+    row.className = "track-item";
+    row.dataset.index = i;
+
+    row.innerHTML = `
+      <div class="track-thumb">
+        <img src="icons/icon-512.png" alt="GELM">
+      </div>
+      <div class="track-info">
+        <div class="track-name">${t.title}</div>
+      </div>
+    `;
+
+    row.addEventListener("click", () => {
+      setCurrentTrack(i, true);
+    });
+
+    trackListEl.appendChild(row);
+  });
+
+  updateActiveRow();
+}
 
     row.innerHTML = `
       <div class="track-thumb">
