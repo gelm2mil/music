@@ -251,3 +251,103 @@ body{
     border-radius:16px;
   }
 }
+/* ================================
+   🔽 REDUCCIÓN DE ALTURA GLOBAL
+   ================================ */
+
+/* Reduce padding general del card */
+.player-card {
+    padding: 12px !important;
+    max-width: 460px;
+    margin: auto;
+}
+
+/* Reduce tamaño del logo principal */
+.hero-art img {
+    width: 85% !important;
+    max-height: 260px !important;
+    object-fit: contain;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* Reduce espacio arriba y abajo del título */
+.now-playing {
+    margin-top: 4px !important;
+    margin-bottom: 6px !important;
+}
+
+/* Controles más compactos */
+.controls-row {
+    margin-top: 4px !important;
+    margin-bottom: 6px !important;
+}
+.ctrl-btn {
+    transform: scale(0.85) !important;
+}
+
+/* Barra de progreso más delgada */
+.progress-bar {
+    margin-top: 4px !important;
+    height: 6px !important;
+}
+.progress-fill {
+    height: 6px !important;
+}
+
+/* Tiempos compactos */
+.time-row {
+    margin-top: 3px !important;
+    margin-bottom: 6px !important;
+    font-size: 12px !important;
+}
+
+/* Lista de canciones más compacta */
+.track-item {
+    padding: 6px 4px !important;
+}
+.track-name {
+    font-size: 14px !important;
+}
+
+/* Miniatura más pequeña */
+.track-thumb img {
+    width: 35px !important;
+    height: 35px !important;
+}
+
+/* Reduce espacio final */
+.footer {
+    margin-top: 12px !important;
+    margin-bottom: 10px !important;
+    font-size: 10px !important;
+}
+
+/* ================================
+   📱 MODO CELULAR
+   ================================ */
+@media (max-width: 480px) {
+
+    .player-card {
+        padding: 8px !important;
+    }
+
+    .hero-art img {
+        width: 80% !important;
+        max-height: 220px !important;
+    }
+
+    .ctrl-btn {
+        transform: scale(0.78) !important;
+    }
+
+    .track-thumb img {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .track-name {
+        font-size: 13px !important;
+    }
+}
+
