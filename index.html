@@ -17,7 +17,7 @@
 
 *{box-sizing:border-box}
 
-/* FONDO TIPO BUSCADOR CON ?RESPIRACIÓN? DE COLORES */
+/* FONDO TIPO BUSCADOR CON “RESPIRACIÓN” DE COLORES */
 html,body{
   height:100%;
   margin:0;
@@ -95,14 +95,56 @@ body{
     0 0 90px rgba(0,0,0,0.9);
 }
 
-/* CABECERA FRASE SUPERIOR */
+/* CABECERA CON ICONOS E IZQ/DCHA */
 .header{
-  color:#00ff22;
-  font-weight:700;
-  font-size:18px;
-  text-shadow:0 0 8px rgba(0,255,34,0.7),
-               0 0 18px rgba(0,255,160,0.6);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
   margin-bottom:14px;
+}
+
+.header-title{
+  color:#00fffb;
+  font-weight:900;
+  font-size:18px;
+  text-transform:uppercase;
+  letter-spacing:4px;
+  text-shadow:
+    0 0 8px rgba(0,255,255,0.9),
+    0 0 18px rgba(0,200,255,0.8),
+    0 0 28px rgba(0,160,255,0.7);
+}
+
+.icon-btn{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  border:2px solid #00ffe6;
+  background: radial-gradient(circle at 30% 0%,
+              #00ffe6 0%,
+              #00a4ff 35%,
+              #001a33 100%);
+  color:#ffffff;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:
+    0 0 14px rgba(0,255,230,0.9),
+    0 0 26px rgba(0,164,255,0.7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:transform .12s ease-out, box-shadow .12s ease-out;
+}
+.icon-btn:hover{
+  transform:translateY(-1px) scale(1.07);
+  box-shadow:
+    0 0 20px rgba(0,255,230,1),
+    0 0 34px rgba(0,164,255,0.9);
+}
+.icon-btn:active{
+  transform:translateY(1px) scale(0.96);
 }
 
 /* MARCO ECU / VISUALIZADOR */
@@ -143,6 +185,7 @@ body{
     0 6px 20px rgba(0,0,0,0.9),
     0 0 16px rgba(0,255,200,0.55);
   border:2px solid rgba(0,255,230,0.95);
+  cursor:pointer;
 }
 audio{
   background:#000;
@@ -188,13 +231,14 @@ audio::-webkit-media-controls-mute-button{
   transition:width .1s linear;
 }
 
-/* BOTONES estilo ?Buscar? neon */
+/* BOTONES estilo “Buscar” neon */
 .controls-row{
   display:flex;
   gap:12px;
   justify-content:center;
   align-items:center;
   margin-bottom:6px;
+  margin-top:10px;
 }
 
 .btn{
@@ -225,7 +269,7 @@ audio::-webkit-media-controls-mute-button{
   transform:translateY(1px) scale(0.98);
 }
 
-/* SELECTOR CANCIONES */
+/* SELECTOR CANCIONES (forzar neón en móviles) */
 .song-select{
   display:block;
   margin:18px auto 18px;
@@ -240,9 +284,16 @@ audio::-webkit-media-controls-mute-button{
   font-family:Verdana,monospace;
   font-size:14px;
   box-shadow:0 0 16px rgba(0,255,230,0.5);
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+}
+.song-select option{
+  background:#000000;
+  color:#00ffbf;
 }
 
-/* FRASE INFERIOR */
+/* FRASE INFERIOR PLAY/PAUSE */
 .phrase-wrapper{
   width:100%;
   display:flex;
@@ -253,10 +304,13 @@ audio::-webkit-media-controls-mute-button{
 .phrase-box{
   width:72%;
   min-width:320px;
-  background:rgba(0,0,0,0.96);
+  background:radial-gradient(circle at 20% 0%,
+           rgba(255,180,60,0.18) 0%,
+           rgba(0,0,0,0.96) 40%,
+           rgba(0,0,0,1) 100%);
   padding:26px;
   border-radius:16px;
-  color:#fff;
+  color:#ffffff;
   font-size:30px;
   font-weight:800;
   letter-spacing:6px;
@@ -267,8 +321,35 @@ audio::-webkit-media-controls-mute-button{
     0 0 34px rgba(0,255,230, calc(0.20 * var(--pulse)));
   transition: box-shadow .12s linear,
               transform .12s linear,
-              text-shadow .12s linear;
+              text-shadow .12s linear,
+              border-color .12s linear,
+              color .12s linear,
+              background .18s linear;
+  cursor:pointer;
+  user-select:none;
 }
+
+.phrase-box.paused{
+  color:#00fffb;
+  border-color:#00ffe6;
+  text-shadow:
+    0 0 8px rgba(0,255,255,0.8),
+    0 0 20px rgba(0,150,255,0.7);
+}
+
+.phrase-box.playing{
+  color:#ffe27a;
+  border-color:#ff7b00;
+  background:radial-gradient(circle at 10% 0%,
+           rgba(255,200,80,0.50) 0%,
+           rgba(0,0,0,0.96) 45%,
+           rgba(0,0,0,1) 100%);
+  text-shadow:
+    0 0 10px rgba(255,200,80,0.9),
+    0 0 26px rgba(255,120,40,0.8),
+    0 0 40px rgba(255,60,20,0.6);
+}
+
 .phrase-sub{
   margin-top:12px;
   color:#00ff22;
@@ -321,8 +402,11 @@ contadorNerox();
 <body>
 <div class="page-wrap">
   <div class="center">
+    <!-- CABECERA CON ICONOS -->
     <div class="header">
-      musica variada
+      <button id="headerPrev" class="icon-btn" aria-label="Anterior">&#9664;</button>
+      <div class="header-title">MÚSICA VARIADA</div>
+      <button id="headerNext" class="icon-btn" aria-label="Siguiente">&#9654;</button>
     </div>
 
     <div class="eq-frame"><canvas id="viz"></canvas></div>
@@ -334,9 +418,9 @@ contadorNerox();
     </div>
 
     <div class="controls-row">
-      <button id="prev" class="btn">? Anterior</button>
-      <button id="playPause" class="btn">?</button>
-      <button id="next" class="btn">Siguiente ?</button>
+      <button id="prev" class="btn">⏮ Anterior</button>
+      <button id="playPause" class="btn">▶ / ⏸</button>
+      <button id="next" class="btn">Siguiente ⏭</button>
       <button id="shuffleBtn" class="btn">Shuffle: ON</button>
     </div>
 
@@ -351,9 +435,9 @@ contadorNerox();
     </select>
 
     <div class="phrase-wrapper">
-      <div id="phrase" class="phrase-box">
-        Bendecido 
-        <div class="phrase-sub"> DIA</div>
+      <div id="phrase" class="phrase-box paused">
+        BENDICIDO
+        <div class="phrase-sub">DÍA</div>
       </div>
     </div>
 
@@ -384,6 +468,8 @@ const prevBtn = document.getElementById('prev');
 const nextBtn = document.getElementById('next');
 const playPauseBtn = document.getElementById('playPause');
 const shuffleBtn = document.getElementById('shuffleBtn');
+const headerPrev = document.getElementById('headerPrev');
+const headerNext = document.getElementById('headerNext');
 
 let audioCtx = null, analyser = null, sourceNode = null, dataArray = null, bufferLength = 0, vizId = null;
 let bars = 96, layers = 6;
@@ -393,6 +479,7 @@ let playlist = []; // [{url,title},...]
 let order = [];    // array of indices in playlist defining playback order
 let currentOrderIndex = 0;
 let shuffleOn = true;
+let firstInteractionDone = false;
 
 /* Resize canvas */
 function resizeCanvas(){
@@ -432,21 +519,43 @@ document.querySelector('.progress-wrap').addEventListener('click', function(e){
   audio.currentTime = (x / rect.width) * audio.duration;
 });
 
+/* helpers de reproducción */
+function togglePlay(){
+  if(!playlist.length) return;
+  if(audio.paused) audio.play().catch(()=>{}); else audio.pause();
+}
+
+function firstStartIfNeeded(){
+  if(firstInteractionDone) return false;
+  firstInteractionDone = true;
+  if(!order.length) buildOrderWithStart();
+  currentOrderIndex = 0;
+  playCurrentOrder();
+  return true;
+}
+
 /* Play / Pause button */
 playPauseBtn.addEventListener('click', ()=>{
-  if(audio.paused) audio.play().catch(()=>{}); else audio.pause();
+  if(firstStartIfNeeded()) return;
+  togglePlay();
 });
 
 /* prev / next */
 prevBtn.addEventListener('click', ()=> prevSong());
 nextBtn.addEventListener('click', ()=> nextSong());
 
+/* Iconos de cabecera usan mismo control */
+headerPrev.addEventListener('click', (e)=>{ e.stopPropagation(); prevSong(); });
+headerNext.addEventListener('click', (e)=>{ e.stopPropagation(); nextSong(); });
+
 /* shuffle toggle */
 shuffleBtn.addEventListener('click', ()=>{
   shuffleOn = !shuffleOn;
   shuffleBtn.textContent = shuffleOn ? 'Shuffle: ON' : 'Shuffle: OFF';
-  if(playlist.length)
-    buildOrderWithStart(order[currentOrderIndex] !== undefined ? order[currentOrderIndex] : 0);
+  if(playlist.length){
+    const currentPlaylistIndex = order[currentOrderIndex] ?? 0;
+    buildOrderWithStart(currentPlaylistIndex);
+  }
 });
 
 /* selector */
@@ -455,6 +564,7 @@ select.addEventListener('change', function(){
   const idx = parseInt(this.value,10);
   buildOrderWithStart(idx);
   currentOrderIndex = 0;
+  firstInteractionDone = true;
   playCurrentOrder();
 });
 
@@ -462,7 +572,8 @@ select.addEventListener('change', function(){
 document.addEventListener('keydown', (e)=>{
   if(e.code === 'Space'){
     e.preventDefault();
-    if(audio.paused) audio.play().catch(()=>{}); else audio.pause();
+    if(firstStartIfNeeded()) return;
+    togglePlay();
   }
 });
 
@@ -547,7 +658,7 @@ function lerpColor(a,b,t){
   ];
 }
 
-/* Flame text effect */
+/* Flame text effect + vibración frase */
 (function flameLoop(){
   let pulse = 0;
   function frame(){
@@ -602,6 +713,7 @@ function playCurrentOrder(){
 
 /* next/prev */
 function nextSong(){
+  if(!order.length) return;
   currentOrderIndex++;
   if(currentOrderIndex >= order.length){
     buildOrderWithStart();
@@ -610,6 +722,7 @@ function nextSong(){
   playCurrentOrder();
 }
 function prevSong(){
+  if(!order.length) return;
   currentOrderIndex--;
   if(currentOrderIndex < 0) currentOrderIndex = order.length - 1;
   playCurrentOrder();
@@ -674,21 +787,36 @@ async function loadSongsFromJSON(){
     if(!playlist.length) return;
     buildSelect();
     buildOrderWithStart();
-    playCurrentOrder();
+    // Ya NO reproducimos aquí: se hace al primer toque del usuario
   }catch(e){
     console.error('Error loading canciones.json', e);
   }
 }
 
-/* click en superficie del player = play/pause */
+/* click en superficie del player = autoplay + play/pause */
 playerSurface.addEventListener('click', (e)=>{
   if(e.target.tagName.toLowerCase() === 'audio') return;
-  if(audio.paused) audio.play().catch(()=>{}); else audio.pause();
+  if(firstStartIfNeeded()) return;
+  togglePlay();
 });
 
-/* actualizar icono play/pause */
-audio.addEventListener('play', ()=> playPauseBtn.textContent = '?');
-audio.addEventListener('pause', ()=> playPauseBtn.textContent = '?');
+/* Bendecido día = PLAY/PAUSA */
+phrase.addEventListener('click', ()=>{
+  if(firstStartIfNeeded()) return;
+  togglePlay();
+});
+
+/* actualizar estado visual play/pause */
+audio.addEventListener('play', ()=>{
+  phrase.classList.add('playing');
+  phrase.classList.remove('paused');
+  playPauseBtn.textContent = '⏸';
+});
+audio.addEventListener('pause', ()=>{
+  phrase.classList.add('paused');
+  phrase.classList.remove('playing');
+  playPauseBtn.textContent = '▶';
+});
 
 /* Inicializar */
 loadSongsFromJSON();
