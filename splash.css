@@ -1,73 +1,121 @@
-/* Pantalla splash completa */
-#splash {
-  position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background: radial-gradient(circle, #0ff, #7000ff 70%, #000020 100%);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:99999;
-  animation: fadeOut 1.4s ease-out forwards;
-  animation-delay: 1.2s;
-}
-
-/* Logo con pulso */
-#splash img {
-  width: 220px;
-  filter: drop-shadow(0 0 25px #0ff);
-  animation: pulse 1.2s infinite alternate;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); filter: drop-shadow(0 0 15px #0ff); }
-  100% { transform: scale(1.08); filter: drop-shadow(0 0 35px #0ff); }
-}
-
-@keyframes fadeOut {
-  0% { opacity:1; }
-  100% { opacity:0; visibility:hidden; }
-}
-/* Fondo animado */
+/* =====================================
+      FONDO NEÓN ANIMADO
+=====================================*/
 .splash-bg {
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at 20% 20%, #7b00ff, #000235 70%, #000010);
-  animation: bgMove 6s infinite alternate ease-in-out;
-  z-index: 9999;
+  background: radial-gradient(circle at 30% 20%, #7b00ff, #000235 60%, #000010);
+  animation: bgMove 12s infinite alternate ease-in-out;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+  z-index: 99999;
 }
-
 @keyframes bgMove {
   0% { background-position: 0% 0%; }
   100% { background-position: 100% 100%; }
 }
 
-/* Logo animado */
+/* =====================================
+        LUZ BARRIENDO (RAYO)
+=====================================*/
+.splash-light {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(0,255,255,0.15),
+    transparent
+  );
+  animation: sweep 4s infinite ease-in-out;
+  pointer-events: none;
+}
+@keyframes sweep {
+  0% { transform: translateX(-100%) rotate(5deg); }
+  100% { transform: translateX(100%) rotate(5deg); }
+}
+
+/* =====================================
+        PARTÍCULAS NEÓN
+=====================================*/
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #00eaff;
+  border-radius: 50%;
+  box-shadow: 0 0 12px #00eaff;
+  opacity: 0.7;
+  animation: floatUp 6s infinite ease-in-out;
+}
+@keyframes floatUp {
+  0% { transform: translateY(40px) scale(0.5); opacity: 0.2; }
+  50% { transform: translateY(-40px) scale(1); opacity: 1; }
+  100% { transform: translateY(40px) scale(0.5); opacity: 0.2; }
+}
+
+/* =====================================
+        LOGO 3D + GLOW
+=====================================*/
 .splash-logo {
-  width: 180px;
-  height: 180px;
+  width: 220px;
+  height: 220px;
+  border-radius: 40px;
   opacity: 0;
-  transform: scale(0.7);
-  animation: logoShow 1.6s forwards ease-out;
+  transform: scale(0.6) rotateX(35deg);
+  animation: logoEnter 2.4s forwards ease-out;
   filter: drop-shadow(0 0 25px #00eaff);
 }
-
-@keyframes logoShow {
-  0% { opacity: 0; transform: scale(0.6); }
-  60% { opacity: 1; transform: scale(1.05); }
-  100% { opacity: 1; transform: scale(1); }
+@keyframes logoEnter {
+  0% { opacity: 0; transform: scale(0.5) rotateX(55deg); }
+  60% { opacity: 1; transform: scale(1.1) rotateX(0deg); }
+  100% { transform: scale(1) rotateX(0deg); }
 }
 
-/* Fade out de la splash */
+/* =====================================
+        HALO PULSANTE
+=====================================*/
+.splash-halo {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,255,255,0.3), transparent);
+  animation: haloPulse 2.5s infinite alternate;
+  filter: blur(12px);
+}
+@keyframes haloPulse {
+  0% { transform: scale(1); opacity: 0.4; }
+  100% { transform: scale(1.25); opacity: 0.8; }
+}
+
+/* =====================================
+        HUMO LUMINOSO
+=====================================*/
+.splash-fog {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,0,200,0.15), transparent 70%);
+  animation: fogMove 14s infinite alternate ease-in-out;
+  filter: blur(90px);
+  opacity: 0.4;
+}
+@keyframes fogMove {
+  0% { transform: translate(-20%, -10%); }
+  100% { transform: translate(20%, 10%); }
+}
+
+/* =====================================
+        DESVANECER SPLASH
+=====================================*/
 .splash-hide {
-  animation: fadeOut 0.8s forwards ease-in;
+  animation: fadeOut 1.1s forwards ease-in-out;
 }
-
 @keyframes fadeOut {
-  to { opacity: 0; visibility: hidden; }
+  0% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
 }
