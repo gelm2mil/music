@@ -1,410 +1,147 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>:: by--gelm::</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GELM · Reproductor Neon</title>
 
-<style>
-:root{
-  --green: #00ff22;
-  --blue: #00eaff;
-  --red: #ff0033;
-  --violet: #b300ff;
-  --player-width:980px;
-  --pulse: 1;
-}
+  <!-- Manifest PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
 
-*{box-sizing:border-box}
+  <!-- Colores del navegador -->
+  <meta name="theme-color" content="#000000" />
 
-/* FONDO TIPO BUSCADOR CON ?RESPIRACIÓN? DE COLORES */
-html,body{
-  height:100%;
-  margin:0;
-  font-family:"Verdana",Arial,sans-serif;
-}
-
-body{
-  color:#ffffff;
-  text-align:center;
-  margin:0;
-  padding:0;
-  border:12px solid #00ffe6;
-  background:
-    radial-gradient(circle at top, #2b0033 0%, #000000 60%, #050505 100%);
-  box-shadow:
-    inset 0 0 30px rgba(0,255,230,0.5),
-    0 0 80px rgba(0,255,230,0.25);
-  animation:fondoGlow 4s infinite alternate;
-}
-
-/* respiración tipo buscador */
-@keyframes fondoGlow {
-  0%{
-    box-shadow:
-      inset 0 0 26px rgba(0,255,230,0.55),
-      0 0 40px rgba(0,255,230,0.25);
-  }
-  100%{
-    box-shadow:
-      inset 0 0 90px rgba(255,0,255,0.6),
-      0 0 90px rgba(255,0,255,0.45);
-  }
-}
-
-/* CONTADOR NEROX (esquina inferior derecha) */
-#contador {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(0,0,0,0.85);
-    padding: 12px 25px;
-    color: #00ff00;
-    border: 3px solid #00ff00;
-    font-size: 18px;
-    border-radius: 12px;
-    text-shadow: 0 0 12px #00ff00;
-    box-shadow: 0 0 30px #00ff00;
-    animation: pulso 1.5s infinite alternate;
-    z-index: 9999;
-}
-@keyframes pulso {
-    0%   { transform: scale(1); }
-    100% { transform: scale(1.12); }
-}
-
-/* MARCO PRINCIPAL tipo tarjeta del buscador */
-.page-wrap{
-  min-height:100vh;
-  padding:26px 16px 34px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
-
-.center{
-  width:100%;
-  max-width:var(--player-width);
-  margin:0 auto;
-  background:rgba(0,0,0,0.96);
-  border-radius:18px;
-  padding:20px 18px 26px;
-  border:3px solid #00ffe6;
-  box-shadow:
-    0 0 28px rgba(0,255,230,0.55),
-    0 0 90px rgba(0,0,0,0.9);
-}
-
-/* CABECERA FRASE SUPERIOR */
-.header{
-  color:#00ff22;
-  font-weight:700;
-  font-size:18px;
-  text-shadow:0 0 8px rgba(0,255,34,0.7),
-               0 0 18px rgba(0,255,160,0.6);
-  margin-bottom:14px;
-}
-
-/* MARCO ECU / VISUALIZADOR */
-.eq-frame{
-  width:100%;
-  background:#000;
-  padding:16px;
-  border-radius:16px;
-  border:3px solid #ff0033;
-  box-shadow:
-    0 10px 40px rgba(179,0,0, calc(0.10 * var(--pulse))),
-    0 0 14px rgba(255,40,80, calc(0.23 * var(--pulse))),
-    inset 0 0 18px rgba(255,0,50, calc(0.08 * var(--pulse)));
-  margin:6px auto 18px;
-  transition: box-shadow .12s linear;
-}
-
-#viz{
-  display:block;
-  width:100%;
-  height:240px;
-  background:transparent;
-  border-radius:6px;
-}
-
-/* AUDIO */
-.audio-wrap{
-  margin:18px 0 8px;
-  display:flex;
-  justify-content:center;
-}
-.player-surface{
-  background:#000;
-  border-radius:18px;
-  padding:10px 20px;
-  display:inline-block;
-  box-shadow:
-    0 6px 20px rgba(0,0,0,0.9),
-    0 0 16px rgba(0,255,200,0.55);
-  border:2px solid rgba(0,255,230,0.95);
-}
-audio{
-  background:#000;
-  color:#fff;
-  width:760px;
-  max-width:86vw;
-  height:44px;
-  border-radius:12px;
-  outline:none;
-}
-audio::-webkit-media-controls-panel{
-  background:transparent;
-  color:#fff;
-}
-audio::-webkit-media-controls-play-button,
-audio::-webkit-media-controls-mute-button{
-  filter:grayscale(0) brightness(1.4) contrast(1.2);
-}
-
-/* TIEMPO + BARRA PROGRESO */
-.time{
-  text-align:center;
-  color:#00ffbf;
-  font-family:monospace;
-  margin-top:8px;
-  font-size:13px;
-  text-shadow:0 0 6px rgba(0,255,191,0.4);
-}
-.progress-wrap{
-  width:80%;
-  height:12px;
-  background:#040404;
-  margin:14px auto;
-  border-radius:12px;
-  border:2px solid rgba(255,255,255,0.03);
-  overflow:hidden;
-}
-.progress{
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,#ff0033,#ffd200,#b24bff,#0044ff,#00ff66);
-  background-size:500% 100%;
-  transition:width .1s linear;
-}
-
-/* BOTONES estilo ?Buscar? neon */
-.controls-row{
-  display:flex;
-  gap:12px;
-  justify-content:center;
-  align-items:center;
-  margin-bottom:6px;
-}
-
-.btn{
-  background: radial-gradient(circle at top,
-              #00ffe6 0%,
-              #00a4ff 45%,
-              #00264d 100%);
-  border:none;
-  color:#000;
-  padding:8px 14px;
-  border-radius:22px;
-  cursor:pointer;
-  font-weight:700;
-  font-size:13px;
-  text-shadow:0 0 4px rgba(255,255,255,0.5);
-  box-shadow:
-    0 0 12px rgba(0,255,230,0.9),
-    0 0 24px rgba(0,164,255,0.6);
-  transition:transform .12s ease-out, box-shadow .12s ease-out;
-}
-.btn:hover{
-  transform:translateY(-1px) scale(1.04);
-  box-shadow:
-    0 0 18px rgba(0,255,230,1),
-    0 0 34px rgba(0,164,255,0.9);
-}
-.btn:active{
-  transform:translateY(1px) scale(0.98);
-}
-
-/* SELECTOR CANCIONES */
-.song-select{
-  display:block;
-  margin:18px auto 18px;
-  width:60%;
-  min-width:260px;
-  height:36px;
-  background:#000;
-  color:#00ffbf;
-  padding:6px 8px;
-  border-radius:10px;
-  border:2px solid #00ffe6;
-  font-family:Verdana,monospace;
-  font-size:14px;
-  box-shadow:0 0 16px rgba(0,255,230,0.5);
-}
-
-/* FRASE INFERIOR */
-.phrase-wrapper{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  margin-top:28px;
-  margin-bottom:26px;
-}
-.phrase-box{
-  width:72%;
-  min-width:320px;
-  background:rgba(0,0,0,0.96);
-  padding:26px;
-  border-radius:16px;
-  color:#fff;
-  font-size:30px;
-  font-weight:800;
-  letter-spacing:6px;
-  text-align:center;
-  border:3px solid rgba(0,255,230,0.9);
-  box-shadow:
-    0 10px 30px rgba(0,0,0,0.8),
-    0 0 34px rgba(0,255,230, calc(0.20 * var(--pulse)));
-  transition: box-shadow .12s linear,
-              transform .12s linear,
-              text-shadow .12s linear;
-}
-.phrase-sub{
-  margin-top:12px;
-  color:#00ff22;
-  font-size:14px;
-  text-shadow:0 0 6px rgba(0,255,34,0.6);
-}
-
-/* PIE */
-.footer{
-  margin-top:4px;
-  color:#00ff22;
-  text-align:center;
-  font-size:12px;
-  text-shadow:0 0 6px rgba(0,255,34,0.4);
-}
-
-/* RESPONSIVE */
-@media (max-width:900px){
-  :root{--player-width:95vw;}
-  #viz{height:160px;}
-  .phrase-box{
-    font-size:20px;
-    letter-spacing:4px;
-    padding:16px;
-    width:86%;
-  }
-  audio{height:40px;}
-  .song-select{width:86%;}
-}
-</style>
+  <!-- Estilos -->
+  <link rel="stylesheet" href="styles.css">
 </head>
-
-<script>
-// CONTADOR NEROX REAL
-async function contadorNerox() {
-    try {
-        const res = await fetch("https://api.countapi.xyz/hit/nerox/reproductor");
-        const data = await res.json();
-        const box = document.getElementById("contador");
-        if (box) box.textContent = "NEROX = " + data.value;
-    } catch (e) {
-        console.log("Error contador", e);
-    }
-}
-
-// Ejecutarlo al entrar
-contadorNerox();
-</script>
-
 <body>
 <div class="page-wrap">
   <div class="center">
-    <div class="header">
-      musica variada
-    </div>
 
-    <div class="eq-frame"><canvas id="viz"></canvas></div>
+    <!-- TÍTULO / CABECERA -->
+    <header class="header">
+      🎧 GELM · Música Variada Neon
+    </header>
 
-    <div class="audio-wrap">
+    <!-- VISUALIZADOR -->
+    <section class="eq-frame">
+      <canvas id="viz"></canvas>
+    </section>
+
+    <!-- SUPERFICIE DEL PLAYER -->
+    <section class="audio-wrap">
       <div class="player-surface" id="playerSurface">
-        <audio id="audio" controls crossorigin="anonymous"></audio>
+        <!-- Icono “bocina arcoiris” -->
+        <div class="sound-orb">
+          <div class="sound-orb-inner"></div>
+        </div>
+
+        <!-- Barra de progreso personalizada -->
+        <div class="progress-wrap">
+          <div id="progress" class="progress"></div>
+        </div>
+
+        <!-- Tiempo -->
+        <div class="time" id="timeText">00:00 / 00:00</div>
+
+        <!-- Controles -->
+        <div class="controls-row">
+          <button id="prev" class="btn">⟵ Anterior</button>
+          <button id="playPause" class="btn btn-main">▶︎</button>
+          <button id="next" class="btn">Siguiente ⟶</button>
+          <button id="shuffleBtn" class="btn btn-outline">Shuffle: ON</button>
+        </div>
+
+        <!-- Audio real (sin controles nativos) -->
+        <audio id="audio" crossorigin="anonymous"></audio>
       </div>
-    </div>
+    </section>
 
-    <div class="controls-row">
-      <button id="prev" class="btn">? Anterior</button>
-      <button id="playPause" class="btn">?</button>
-      <button id="next" class="btn">Siguiente ?</button>
-      <button id="shuffleBtn" class="btn">Shuffle: ON</button>
-    </div>
+    <!-- SELECTOR DE CANCIONES -->
+    <section>
+      <select id="cancion" class="song-select" aria-label="Selección de canciones">
+        <option value="">[..:: ELIGE LA CANCIÓN ::..]</option>
+      </select>
+    </section>
 
-    <div class="time" id="timeText">00:00 / 00:00</div>
-
-    <div class="progress-wrap">
-      <div id="progress" class="progress"></div>
-    </div>
-
-    <select id="cancion" class="song-select" aria-label="Seleccion de canciones">
-      <option value="">[..:: ELIGE LA CANCION ::..]</option>
-    </select>
-
-    <div class="phrase-wrapper">
+    <!-- FRASE INFERIOR “FUEGO” -->
+    <section class="phrase-wrapper">
       <div id="phrase" class="phrase-box">
-        Bendecido 
-        <div class="phrase-sub"> DIA</div>
+        BENDICIDO
+        <div class="phrase-sub">DÍA</div>
       </div>
-    </div>
+    </section>
 
-    <div class="footer">
+    <!-- PIE -->
+    <footer class="footer">
       2000 - 2040 | BIENVENIDOS | nerox2mil@proton.me<br>
       att: ---[terry]---
-    </div>
+    </footer>
+
   </div>
 </div>
 
-<!-- CONTADOR VISUAL -->
+<!-- CONTADOR NEROX (esquina) -->
 <div id="contador">NEROX = 0</div>
 
 <script>
-/* Bloqueo clic derecho */
+/* ============ CONTADOR NEROX ============ */
+async function contadorNerox() {
+  try {
+    const res = await fetch("https://api.countapi.xyz/hit/nerox/reproductor");
+    const data = await res.json();
+    const box = document.getElementById("contador");
+    if (box) box.textContent = "NEROX = " + data.value;
+  } catch (e) {
+    console.log("Error contador", e);
+  }
+}
+contadorNerox();
+
+/* ============ BLOQUEO CLICK DERECHO ============ */
 document.addEventListener('contextmenu', e => e.preventDefault());
 
-/* Elementos */
-const audio = document.getElementById('audio');
-const canvas = document.getElementById('viz');
-const ctx = canvas.getContext('2d');
-const progressEl = document.getElementById('progress');
-const timeText = document.getElementById('timeText');
-const select = document.getElementById('cancion');
-const phrase = document.getElementById('phrase');
-const playerSurface = document.getElementById('playerSurface');
-const prevBtn = document.getElementById('prev');
-const nextBtn = document.getElementById('next');
+/* ============ ELEMENTOS ============ */
+const audio        = document.getElementById('audio');
+const canvas       = document.getElementById('viz');
+const ctx          = canvas.getContext('2d');
+const progressEl   = document.getElementById('progress');
+const timeText     = document.getElementById('timeText');
+const select       = document.getElementById('cancion');
+const phrase       = document.getElementById('phrase');
+const prevBtn      = document.getElementById('prev');
+const nextBtn      = document.getElementById('next');
 const playPauseBtn = document.getElementById('playPause');
-const shuffleBtn = document.getElementById('shuffleBtn');
+const shuffleBtn   = document.getElementById('shuffleBtn');
+const playerSurface = document.getElementById('playerSurface');
+const soundOrb      = document.querySelector('.sound-orb');
 
-let audioCtx = null, analyser = null, sourceNode = null, dataArray = null, bufferLength = 0, vizId = null;
-let bars = 96, layers = 6;
+/* AudioContext / Visualizer */
+let audioCtx = null, analyser = null, sourceNode = null,
+    dataArray = null, bufferLength = 0, vizId = null;
 
-/* Playlist loaded from JSON */
-let playlist = []; // [{url,title},...]
-let order = [];    // array of indices in playlist defining playback order
+/* Playlist */
+let playlist = [];     // [{url,title}, ...]
+let order = [];        // indices aleatorios
 let currentOrderIndex = 0;
 let shuffleOn = true;
+let firstPlay = false;
 
-/* Resize canvas */
+/* Config visualizer */
+const bars   = 96;
+const layers = 6;
+
+/* ============ CANVAS RESPONSIVE ============ */
 function resizeCanvas(){
   const r = canvas.getBoundingClientRect();
-  canvas.width = Math.floor(r.width * devicePixelRatio);
+  canvas.width  = Math.floor(r.width * devicePixelRatio);
   canvas.height = Math.floor(r.height * devicePixelRatio);
   ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
 }
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-/* Time formatter */
+/* ============ FORMATO TIEMPO ============ */
 function fmt(t){
   if(!t || isNaN(t)) return "00:00";
   const m = Math.floor(t/60);
@@ -412,7 +149,7 @@ function fmt(t){
   return String(m).padStart(2,'0')+":"+String(s).padStart(2,'0');
 }
 
-/* Progress */
+/* ============ PROGRESO ============ */
 audio.addEventListener('timeupdate', ()=>{
   if(audio.duration && !isNaN(audio.duration)){
     const pct = (audio.currentTime / audio.duration) * 100;
@@ -424,32 +161,31 @@ audio.addEventListener('timeupdate', ()=>{
   }
 });
 
-/* Seek */
-document.querySelector('.progress-wrap').addEventListener('click', function(e){
+/* SEEK con click en barra */
+document.querySelector('.progress-wrap').addEventListener('click', e=>{
   if(!audio.duration) return;
-  const rect = this.getBoundingClientRect();
+  const rect = e.currentTarget.getBoundingClientRect();
   const x = e.clientX - rect.left;
   audio.currentTime = (x / rect.width) * audio.duration;
 });
 
-/* Play / Pause button */
+/* ============ CONTROLES ============ */
 playPauseBtn.addEventListener('click', ()=>{
   if(audio.paused) audio.play().catch(()=>{}); else audio.pause();
 });
 
-/* prev / next */
-prevBtn.addEventListener('click', ()=> prevSong());
-nextBtn.addEventListener('click', ()=> nextSong());
+prevBtn.addEventListener('click', prevSong);
+nextBtn.addEventListener('click', nextSong);
 
-/* shuffle toggle */
 shuffleBtn.addEventListener('click', ()=>{
   shuffleOn = !shuffleOn;
   shuffleBtn.textContent = shuffleOn ? 'Shuffle: ON' : 'Shuffle: OFF';
-  if(playlist.length)
-    buildOrderWithStart(order[currentOrderIndex] !== undefined ? order[currentOrderIndex] : 0);
+  if(playlist.length){
+    const currentIdx = order[currentOrderIndex] ?? 0;
+    buildOrderWithStart(currentIdx);
+  }
 });
 
-/* selector */
 select.addEventListener('change', function(){
   if(!this.value) return;
   const idx = parseInt(this.value,10);
@@ -458,15 +194,35 @@ select.addEventListener('change', function(){
   playCurrentOrder();
 });
 
-/* keyboard space */
-document.addEventListener('keydown', (e)=>{
+/* Barra espaciadora = play/pause */
+document.addEventListener('keydown', e=>{
   if(e.code === 'Space'){
     e.preventDefault();
     if(audio.paused) audio.play().catch(()=>{}); else audio.pause();
   }
 });
 
-/* AudioContext & visualizer */
+/* Click en superficie negra = play/pause */
+playerSurface.addEventListener('click', e=>{
+  if(e.target.tagName.toLowerCase() === 'button' ||
+     e.target.tagName.toLowerCase() === 'select') return;
+  if(audio.paused) audio.play().catch(()=>{}); else audio.pause();
+});
+
+/* Actualizar icono play/pause y animación orb */
+audio.addEventListener('play', ()=>{
+  playPauseBtn.textContent = '⏸';
+  soundOrb.classList.add('sound-orb-on');
+});
+audio.addEventListener('pause', ()=>{
+  playPauseBtn.textContent = '▶︎';
+  soundOrb.classList.remove('sound-orb-on');
+});
+
+/* Auto siguiente */
+audio.addEventListener('ended', nextSong);
+
+/* ============ AUDIOCONTEXT / VIZ ============ */
 function createGraph(){
   if(audioCtx) return true;
   try{
@@ -485,26 +241,38 @@ function createGraph(){
   }
 }
 
-/* Visualizer draw */
+/* Iniciar visualizador la primera vez que se reproduce */
+audio.addEventListener('play', () => {
+  if(!firstPlay){
+    const ok = createGraph();
+    if(ok) startViz();
+    document.documentElement.style.setProperty('--pulse','1.2');
+    setTimeout(()=> document.documentElement.style.setProperty('--pulse','1'), 600);
+    firstPlay = true;
+  }
+});
+
+/* Dibujo del visualizador */
 function startViz(){
   if(!analyser) return;
   cancelAnimationFrame(vizId);
+
   function draw(){
     analyser.getByteFrequencyData(dataArray);
+
     const rect = canvas.getBoundingClientRect();
     const W = rect.width;
     const H = rect.height;
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    const gap = 2;
-    const barW = Math.max(1, (W / bars) - gap);
-
-    // promedio para pulsos
+    /* Promedio para pulso general */
     let sum = 0;
     for(let i=0;i<dataArray.length;i++) sum += dataArray[i];
     const avg = sum / dataArray.length / 255;
-
     document.documentElement.style.setProperty('--pulse', (0.6 + avg*1.4).toFixed(3));
+
+    const gap = 2;
+    const barW = Math.max(1, (W / bars) - gap);
 
     for(let layer=0; layer<layers; layer++){
       const depth = layer / layers;
@@ -512,33 +280,33 @@ function startViz(){
       const alpha = 0.18 + (1 - depth) * 0.6;
       const yOffset = layer * (H * 0.02);
 
-      for(let i=0; i<bars; i++){
+      for(let i=0;i<bars;i++){
         const idx = Math.floor(i * bufferLength / bars);
         const v = dataArray[idx] / 255;
         const h = Math.max(2, v * H * 0.78 * scale);
-        const x = i * (barW + gap) + layer*4;
+        const x = i * (barW + gap) + layer * 4;
         const y = H - h - yOffset;
 
         const pos = i / bars;
         let color;
-        if(pos < 0.2) color = lerpColor([255,40,60],[255,210,30], pos/0.2);
-        else if(pos < 0.45) color = lerpColor([255,210,30],[166,77,255], (pos-0.2)/0.25);
+        if(pos < 0.2)      color = lerpColor([255,40,60],[255,210,30], pos/0.2);
+        else if(pos < 0.45)color = lerpColor([255,210,30],[166,77,255], (pos-0.2)/0.25);
         else if(pos < 0.7) color = lerpColor([166,77,255],[0,68,255], (pos-0.45)/0.25);
-        else color = lerpColor([0,68,255],[0,255,120], (pos-0.7)/0.3);
+        else               color = lerpColor([0,68,255],[0,255,120], (pos-0.7)/0.3);
 
         ctx.fillStyle = `rgba(${color[0]},${color[1]},${color[2]},${alpha})`;
-        ctx.shadowBlur = 24 * (1 - depth) * (1 + avg*1.6);
+        ctx.shadowBlur  = 24 * (1 - depth) * (1 + avg*1.6);
         ctx.shadowColor = `rgba(${color[0]},${Math.max(40,color[1])},${color[2]},${0.45*(1-depth)})`;
         ctx.fillRect(x, y, barW*0.82, h);
         ctx.shadowBlur = 0;
       }
     }
+
     vizId = requestAnimationFrame(draw);
   }
   draw();
 }
 
-/* helpers */
 function lerpColor(a,b,t){
   return [
     Math.round(a[0] + (b[0]-a[0])*t),
@@ -547,7 +315,7 @@ function lerpColor(a,b,t){
   ];
 }
 
-/* Flame text effect */
+/* ============ EFECTO FUEGO EN FRASE ============ */
 (function flameLoop(){
   let pulse = 0;
   function frame(){
@@ -576,49 +344,9 @@ function lerpColor(a,b,t){
   frame();
 })();
 
-/* Start viz on first user play */
-let firstPlay = false;
-audio.addEventListener('play', async () => {
-  if(!firstPlay){
-    const ok = createGraph();
-    if(ok) startViz();
-    document.documentElement.style.setProperty('--pulse', '1.2');
-    setTimeout(()=> document.documentElement.style.setProperty('--pulse','1'), 600);
-    firstPlay = true;
-  }
-});
-
-/* playback control using order array */
-function playCurrentOrder(){
-  if(!order.length) return;
-  const playlistIdx = order[currentOrderIndex];
-  const item = playlist[playlistIdx];
-  if(!item) return;
-  audio.src = item.url;
-  audio.load();
-  audio.play().catch(()=>{});
-  select.value = playlistIdx;
-}
-
-/* next/prev */
-function nextSong(){
-  currentOrderIndex++;
-  if(currentOrderIndex >= order.length){
-    buildOrderWithStart();
-    currentOrderIndex = 0;
-  }
-  playCurrentOrder();
-}
-function prevSong(){
-  currentOrderIndex--;
-  if(currentOrderIndex < 0) currentOrderIndex = order.length - 1;
-  playCurrentOrder();
-}
-audio.addEventListener('ended', ()=> nextSong());
-
-/* Build select UI from playlist */
+/* ============ PLAYLIST / ORDEN ============ */
 function buildSelect(){
-  select.innerHTML = '<option value="">[..:: ELIGE LA CANCION ::..]</option>';
+  select.innerHTML = '<option value="">[..:: ELIGE LA CANCIÓN ::..]</option>';
   playlist.forEach((s,i)=>{
     const o = document.createElement('option');
     o.value = i;
@@ -627,7 +355,6 @@ function buildSelect(){
   });
 }
 
-/* Shuffle helper */
 function shuffleArray(a){
   const arr = a.slice();
   for(let i = arr.length -1; i>0; i--){
@@ -637,19 +364,23 @@ function shuffleArray(a){
   return arr;
 }
 
-/* build order: optionally force startIndex first (index in playlist) */
+/* Construir orden: preferir canción que contenga "ger" */
 function buildOrderWithStart(startIndex){
   if(playlist.length===0) return;
 
   let forcedStart = (typeof startIndex === 'number') ? startIndex : null;
+
   if(forcedStart === null){
-    const idx = playlist.findIndex(p=> p.title && p.title.toLowerCase().includes('abrazar la niebla'));
-    if(idx !== -1) forcedStart = idx;
+    const idx = playlist.findIndex(p =>
+      p.title && p.title.toLowerCase().includes('ger')
+    );
+    forcedStart = (idx !== -1) ? idx : 0;
   }
-  if(forcedStart === null) forcedStart = 0;
 
   const others = [];
-  for(let i=0;i<playlist.length;i++) if(i!==forcedStart) others.push(i);
+  for(let i=0;i<playlist.length;i++){
+    if(i!==forcedStart) others.push(i);
+  }
   const orderedOthers = shuffleOn ? shuffleArray(others) : others;
   order = [forcedStart, ...orderedOthers];
 
@@ -662,35 +393,67 @@ function buildOrderWithStart(startIndex){
   currentOrderIndex = 0;
 }
 
-/* Load songs from tu canciones.json */
+function playCurrentOrder(){
+  if(!order.length) return;
+  const playlistIdx = order[currentOrderIndex];
+  const item = playlist[playlistIdx];
+  if(!item) return;
+
+  audio.src = item.url;
+  audio.load();
+  audio.play().catch(()=>{});
+  select.value = playlistIdx;
+}
+
+function nextSong(){
+  if(!order.length) return;
+  currentOrderIndex++;
+  if(currentOrderIndex >= order.length){
+    buildOrderWithStart();
+    currentOrderIndex = 0;
+  }
+  playCurrentOrder();
+}
+
+function prevSong(){
+  if(!order.length) return;
+  currentOrderIndex--;
+  if(currentOrderIndex < 0) currentOrderIndex = order.length - 1;
+  playCurrentOrder();
+}
+
+/* ============ CARGAR MUSICA.JSON ============ */
 async function loadSongsFromJSON(){
   try{
-    const resp = await fetch('https://gelmhistoria.webcindario.com/musica/canciones.json', {cache: "no-cache"});
+    // IMPORTANTE: ruta relativa al propio repo GitHub
+    const resp = await fetch('./musica.json', { cache: 'no-cache' });
     const data = await resp.json();
+
     playlist = data.map(d => ({
-      url: d.url,
+      url:   d.url,
       title: (d.title || '').trim()
     }));
+
     if(!playlist.length) return;
+
     buildSelect();
-    buildOrderWithStart();
-    playCurrentOrder();
+    buildOrderWithStart();   // arranca en "ger" si existe
+    playCurrentOrder();      // intenta reproducir al entrar (según permisos del navegador)
   }catch(e){
-    console.error('Error loading canciones.json', e);
+    console.error('Error cargando musica.json', e);
   }
 }
 
-/* click en superficie del player = play/pause */
-playerSurface.addEventListener('click', (e)=>{
-  if(e.target.tagName.toLowerCase() === 'audio') return;
-  if(audio.paused) audio.play().catch(()=>{}); else audio.pause();
-});
+/* ============ SERVICE WORKER (PWA) ============ */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('./service-worker.js')
+      .catch(err => console.log('SW error', err));
+  });
+}
 
-/* actualizar icono play/pause */
-audio.addEventListener('play', ()=> playPauseBtn.textContent = '?');
-audio.addEventListener('pause', ()=> playPauseBtn.textContent = '?');
-
-/* Inicializar */
+/* INICIO */
 loadSongsFromJSON();
 </script>
 </body>
