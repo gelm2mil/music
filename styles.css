@@ -1,228 +1,253 @@
-/* ===================================================
-   PALETA NEÓN OFICIAL
-   =================================================== */
-:root {
-  --azul: #00eaff;
-  --rosa: #ff00d4;
-  --morado: #7b00ff;
-  --verde: #00ff99;
-  --cyan: #00f6ff;
-}
-
-/* ===================================================
-   FONDO NEÓN TÚNEL ANIMADO (OPCIÓN 3)
-   =================================================== */
+/* Fondo general */
 body{
   margin:0;
-  font-family: Verdana, sans-serif;
-  color:white;
-  text-align:center;
-
-  background: radial-gradient(circle at 50% 50%,
-              #7b00ff,
-              #4a0090,
-              #0b0030,
-              #020012);
-  animation:fondoMove 18s infinite alternate ease-in-out;
-  background-size:200% 200%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Verdana, sans-serif;
+  background: radial-gradient(circle at top left, #7b00ff, #3a005f 40%, #040015 100%);
+  color:#111;
 }
 
-@keyframes fondoMove {
-  0% { background-position:0% 0%; }
-  100% { background-position:100% 100%; }
-}
-
-/* ===================================================
-   CONTENEDOR PRINCIPAL NEÓN
-   =================================================== */
-.contenedor{
-  width:90%;
-  max-width:850px;
-  margin:40px auto;
-  padding:28px;
-  border-radius:25px;
-
-  background:rgba(8, 8, 20, 0.65);
-
-  box-shadow:
-    0 0 20px var(--cyan),
-    0 0 40px rgba(0,255,255,0.4),
-    inset 0 0 20px rgba(255,0,220,0.4);
-
-  backdrop-filter:blur(4px);
-}
-
-/* ===================================================
-   TÍTULO + ICONOS
-   =================================================== */
-
-.header{
+.page-bg{
+  min-height:100vh;
   display:flex;
-  justify-content:center;
   align-items:center;
-  gap:25px;
-  margin-bottom:25px;
-}
-
-.icon-circulo{
-  width:55px;
-  height:55px;
-  border-radius:50%;
-  background: radial-gradient(circle, var(--cyan), #004d66);
-  box-shadow:0 0 25px var(--cyan), inset 0 0 20px var(--cyan);
-  display:flex;
   justify-content:center;
-  align-items:center;
-  font-size:12px;
-  font-weight:bold;
-  color:#000;
+  padding:16px;
 }
 
-.titulo{
-  font-size:32px;
-  font-weight:bold;
-  letter-spacing:5px;
-  background:linear-gradient(90deg, var(--rosa), var(--morado), var(--azul));
-  -webkit-background-clip:text;
-  color:transparent;
-  text-shadow:0 0 12px var(--rosa);
-}
-
-/* ===================================================
-   CANVAS VISUALIZER
-   =================================================== */
-#canvas{
+/* Tarjeta principal */
+.player-card{
   width:100%;
-  height:220px;
-  background:black;
-  border-radius:18px;
+  max-width:420px;
+  background:#05070f;
+  border-radius:28px;
   box-shadow:
-    0 0 20px var(--rosa),
-    inset 0 0 18px var(--cyan);
-  margin-bottom:20px;
+    0 18px 40px rgba(0,0,0,0.8),
+    0 0 24px rgba(0,255,255,0.35);
+  padding:18px 18px 16px;
+  color:#f8f9ff;
 }
 
-/* ===================================================
-   PLAYER BOX
-   =================================================== */
-.player-box{
-  padding:18px;
-  border-radius:18px;
-  background:rgba(0,0,0,0.55);
-  box-shadow:0 0 15px var(--cyan);
-}
-
-/* BARRA PROGRESO */
-.progress-container{
-  width:90%;
-  height:12px;
-  background:#000;
-  margin:10px auto 22px auto;
-  border-radius:12px;
-  box-shadow:inset 0 0 10px var(--morado);
-}
-
-.progress{
-  width:0%;
-  height:12px;
-  background:var(--verde);
-  border-radius:12px;
-  box-shadow:0 0 15px var(--verde);
-}
-
-/* ===================================================
-   BOTONES REPRODUCTOR
-   =================================================== */
-.botones{
+/* Cabecera */
+.card-header{
   display:flex;
-  justify-content:center;
   align-items:center;
-  gap:18px;
+  gap:12px;
+  margin-bottom:16px;
 }
 
-.btn{
-  padding:10px 18px;
-  border:none;
-  border-radius:14px;
-  background: radial-gradient(circle, #0033ff, #001a66);
-  color:white;
-  text-shadow:0 0 8px var(--cyan);
-  box-shadow:0 0 15px var(--cyan);
-  cursor:pointer;
-  font-size:15px;
-  transition:0.2s;
+.logo-wrap{
+  width:62px;
+  height:62px;
+  border-radius:22px;
+  background:#fff;
+  box-shadow:0 0 18px rgba(0,0,0,0.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
 }
 
-.btn:hover{
-  transform:scale(1.07);
-  box-shadow:0 0 20px var(--cyan);
+.logo-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
-/* ===================================================
-   BUSCADOR
-   =================================================== */
-#buscador{
-  width:80%;
-  padding:12px;
-  margin:22px auto;
-  background:rgba(0,0,0,0.45);
-  border-radius:12px;
-  border:2px solid var(--cyan);
-  box-shadow:0 0 12px var(--cyan);
-  color:white;
-  text-align:center;
+.header-text{
+  flex:1;
 }
 
-/* ===================================================
-   BENDICIDO DÍA = BOTÓN PLAY
-   =================================================== */
-.bend{
-  width:80%;
-  margin:0 auto 25px auto;
-  padding:18px;
-  border-radius:18px;
-  background: radial-gradient(circle, #001a33, #003366);
-  color:white;
-  font-size:32px;
-  letter-spacing:5px;
-  text-shadow:0 0 20px var(--azul);
-  box-shadow:
-    0 0 20px var(--azul),
-    inset 0 0 30px rgba(0,255,255,0.6);
-  cursor:pointer;
-}
-
-/* Vibración cuando suena */
-.bend.vibrar{
-  animation:pulse 0.28s infinite alternate;
-}
-
-@keyframes pulse{
-  0%{ transform:scale(1); text-shadow:0 0 20px var(--azul); }
-  100%{ transform:scale(1.04); text-shadow:0 0 30px var(--azul); }
-}
-
-.dia{
+.station-name{
+  font-weight:700;
   font-size:18px;
-  color:var(--verde);
-  text-shadow:0 0 10px var(--verde);
+  letter-spacing:0.08em;
+  text-transform:uppercase;
 }
 
-/* ===================================================
-   FOOTER
-   =================================================== */
+.station-meta{
+  font-size:11px;
+  margin-top:4px;
+  color:#ffb3c6;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.live-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#ff2d55;
+  box-shadow:0 0 10px #ff2d55;
+}
+
+/* Portada */
+.hero-art{
+  margin-top:8px;
+  border-radius:18px;
+  overflow:hidden;
+  background:#111;
+  box-shadow:
+    0 0 20px rgba(0,0,0,0.7),
+    0 0 18px rgba(0,255,200,0.4);
+}
+
+.hero-art img{
+  width:100%;
+  display:block;
+}
+
+/* Now playing */
+.now-playing{
+  margin-top:12px;
+  text-align:left;
+}
+
+.track-title{
+  font-size:16px;
+  font-weight:600;
+  color:#fdfdfd;
+}
+
+/* Controles */
+.controls-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:12px;
+}
+
+.ctrl-btn{
+  border:none;
+  border-radius:999px;
+  height:36px;
+  min-width:36px;
+  padding:0 14px;
+  font-size:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:radial-gradient(circle at top, #00eaff, #004a63);
+  color:#000;
+  cursor:pointer;
+  box-shadow:0 0 16px rgba(0,255,255,0.75);
+}
+
+.main-play{
+  font-size:20px;
+}
+
+/* Progreso */
+.progress-bar{
+  margin-top:12px;
+  width:100%;
+  height:6px;
+  border-radius:999px;
+  background:#171822;
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#00ff99,#00eaff);
+  box-shadow:0 0 12px rgba(0,255,200,0.7);
+}
+
+.time-row{
+  margin-top:4px;
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:#a6b0ff;
+}
+
+/* Lista de pistas */
+.list-header{
+  margin-top:14px;
+  font-size:13px;
+  font-weight:600;
+  text-align:left;
+  color:#9ddcff;
+}
+
+.track-list{
+  margin-top:6px;
+  max-height:260px;
+  overflow-y:auto;
+}
+
+/* Scroll slim */
+.track-list::-webkit-scrollbar{
+  width:6px;
+}
+.track-list::-webkit-scrollbar-track{
+  background:transparent;
+}
+.track-list::-webkit-scrollbar-thumb{
+  background:#2b3555;
+  border-radius:999px;
+}
+
+.track-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 4px;
+  border-radius:14px;
+  cursor:pointer;
+}
+
+.track-item:hover{
+  background:rgba(0, 255, 255, 0.07);
+}
+
+.track-item.active{
+  background:rgba(0, 255, 200, 0.16);
+}
+
+.track-thumb{
+  width:34px;
+  height:34px;
+  border-radius:12px;
+  overflow:hidden;
+  background:#111;
+  flex-shrink:0;
+}
+
+.track-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.track-info{
+  flex:1;
+}
+
+.track-name{
+  font-size:13px;
+  color:#f4f6ff;
+}
+
+/* Footer */
 .footer{
-  font-size:12px;
-  margin-top:20px;
-  opacity:0.8;
+  margin-top:10px;
+  font-size:11px;
+  text-align:center;
+  color:#9ea5d6;
 }
 
-/* ===================================================
-   RESPONSIVE MOVIL
-   =================================================== */
-@media (max-width:600px){
-  .contenedor{ width:94%; padding:18px; }
-  #canvas{ height:180px; }
-  .titulo{ font-size:26px; }
-  .bend{ font-size:28px; }
+/* Responsive */
+@media (max-width:480px){
+  .player-card{
+    padding:14px 14px 12px;
+    border-radius:22px;
+  }
+  .station-name{
+    font-size:16px;
+  }
+  .hero-art{
+    border-radius:16px;
+  }
 }
