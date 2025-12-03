@@ -1,316 +1,330 @@
-
-body {
-  margin: 0;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  color: #eee;
-  background: radial-gradient(circle at 20% 0%, rgba(0,255,255,0.2), transparent 50%),
-              radial-gradient(circle at 80% 0%, rgba(255,0,255,0.18), transparent 55%),
-              #05010a;
-  background-attachment: fixed;
-  animation: fondoGlow 6s ease-in-out infinite alternate;
+:root{
+  --green:  #00ff22;
+  --blue:   #00eaff;
+  --violet: #b300ff;
+  --player-width: 980px;
+  --pulse: 1;
 }
 
+/* RESETEO */
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+html,body{
+  height:100%;
+  font-family:"Verdana",Arial,sans-serif;
+}
+
+/* FONDO GENERAL */
+body{
+  color:#ffffff;
+  text-align:center;
+  border:12px solid #00ffe6;
+  background:
+    radial-gradient(circle at top, #2b0033 0%, #000000 60%, #050505 100%);
+  box-shadow:
+    inset 0 0 30px rgba(0,255,230,0.5),
+    0 0 80px rgba(0,255,230,0.25);
+  animation:fondoGlow 4s infinite alternate;
+}
 @keyframes fondoGlow {
-  0%   { box-shadow: inset 0 0 20px #ff00ff; }
-  50%  { box-shadow: inset 0 0 80px #00ffff; }
-  100% { box-shadow: inset 0 0 120px #ff00ff; }
+  0%{
+    box-shadow:
+      inset 0 0 26px rgba(0,255,230,0.55),
+      0 0 40px rgba(0,255,230,0.25);
+  }
+  100%{
+    box-shadow:
+      inset 0 0 90px rgba(255,0,255,0.6),
+      0 0 90px rgba(255,0,255,0.45);
+  }
 }
 
-.contenedor {
-  max-width: 1200px;
-  margin: 0 auto;
-  background: rgba(0, 0, 0, 0.82);
-  border-radius: 18px;
-  padding: 20px;
+/* CONTENEDOR PRINCIPAL */
+.page-wrap{
+  min-height:100vh;
+  padding:26px 16px 34px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.center{
+  width:100%;
+  max-width:var(--player-width);
+  margin:0 auto;
+  background:rgba(0,0,0,0.96);
+  border-radius:18px;
+  padding:20px 18px 26px;
+  border:3px solid #00ffe6;
   box-shadow:
-      0 0 18px rgba(0,255,255,0.5),
-      0 0 50px rgba(0,0,0,1);
-  border: 1px solid rgba(0,255,255,0.35);
+    0 0 28px rgba(0,255,230,0.55),
+    0 0 90px rgba(0,0,0,0.9);
 }
 
-/* ENCABEZADO Y LOGOS */
-.header-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  margin-bottom: 15px;
+/* CABECERA */
+.header{
+  color:var(--green);
+  font-weight:700;
+  font-size:18px;
+  text-shadow:0 0 8px rgba(0,255,34,0.7),
+               0 0 18px rgba(0,255,160,0.6);
+  margin-bottom:14px;
 }
 
-.logo-box {
-  flex: 0 0 auto;
-  padding: 6px;
-  border-radius: 14px;
-  background: radial-gradient(circle at 30% 0, rgba(0,255,120,0.3), rgba(0,255,255,0.05));
+/* VISUALIZADOR */
+.eq-frame{
+  width:100%;
+  background:#000;
+  padding:16px;
+  border-radius:16px;
+  border:3px solid #ff0033;
   box-shadow:
-      0 0 10px rgba(0,255,120,0.9),
-      0 0 25px rgba(0,0,0,0.9);
-  border: 1px solid rgba(0,255,180,0.9);
+    0 10px 40px rgba(179,0,0, calc(0.10 * var(--pulse))),
+    0 0 14px rgba(255,40,80, calc(0.23 * var(--pulse))),
+    inset 0 0 18px rgba(255,0,50, calc(0.08 * var(--pulse)));
+  margin:6px auto 18px;
+  transition: box-shadow .12s linear;
+}
+#viz{
+  display:block;
+  width:100%;
+  height:240px;
+  background:transparent;
+  border-radius:6px;
 }
 
-.logo-box img {
-  display: block;
-  max-width: 110px;
-  height: auto;
+/* PLAYER */
+.audio-wrap{
+  margin:18px 0 8px;
+  display:flex;
+  justify-content:center;
 }
-
-.titulos {
-  flex: 1 1 auto;
-  text-align: center;
-}
-
-.titulos-linea1 {
-  font-size: 20px;
-  font-weight: bold;
-  color: #00ffc8;
-  text-shadow: 0 0 10px #00ffff, 0 0 25px #0044ff;
-  letter-spacing: 1px;
-}
-
-.titulos-linea2 {
-  font-size: 15px;
-  margin-top: 4px;
-  color: #ffdf5e;
-  text-shadow: 0 0 6px #000;
-}
-
-.titulos-linea3 {
-  font-size: 14px;
-  margin-top: 3px;
-  color: #a5ffe5;
-  text-shadow: 0 0 6px #00ffea;
-}
-
-.titulos-linea4 {
-  font-size: 13px;
-  margin-top: 4px;
-  color: #cccccc;
-}
-
-#estado {
-  text-align: center;
-  margin: 12px 0 15px 0;
-  font-size: 14px;
-  color: #aaa;
-}
-
-.buscador {
-  max-width: 700px;
-  margin: 0 auto 20px auto;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-}
-
-.buscador input {
-  padding: 10px 12px;
-  font-size: 16px;
-  border-radius: 999px;
-  border: 1px solid #00ffc8;
-  min-width: 230px;
-  outline: none;
-  background: #050513;
-  color: #00ffc8;
-  box-shadow: 0 0 10px rgba(0,255,255,0.5);
-}
-
-.buscador input::placeholder {
-  color: #66ffe6;
-}
-
-.buscador button {
-  padding: 10px 22px;
-  font-size: 16px;
-  border-radius: 999px;
-  border: none;
-  background: radial-gradient(circle at 30% 0, #00ffff, #5f00ff);
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
-  text-shadow: 0 0 4px #00ffea;
+.player-surface{
+  position:relative;
+  background:radial-gradient(circle at top, #02040a 0%, #000000 60%);
+  border-radius:24px;
+  padding:18px 20px 18px;
+  display:inline-block;
   box-shadow:
-      0 0 10px rgba(0,255,255,0.8),
-      0 0 26px rgba(0,0,0,0.9);
+    0 6px 20px rgba(0,0,0,0.9),
+    0 0 16px rgba(0,255,200,0.55);
+  border:2px solid rgba(0,255,230,0.95);
+  cursor:pointer;
 }
 
-.buscador button:hover {
-  filter: brightness(1.1);
+/* AUDIO REAL (OCULTO) */
+audio{
+  width:0;
+  height:0;
+  opacity:0;
+  pointer-events:none;
 }
 
-#resultado {
-  max-width: 100%;
-  overflow-x: auto;
+/* ORB / BOCINA ARCOIRIS */
+.sound-orb{
+  position:absolute;
+  top:-14px;
+  left:18px;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:conic-gradient(from 0deg,
+    #ff0033,#ffd200,#00ff22,#00eaff,#b300ff,#ff0033);
+  box-shadow:0 0 20px rgba(0,255,230,0.8);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:.4;
+  transition:opacity .12s, transform .12s;
+}
+.sound-orb-inner{
+  width:60%;
+  height:60%;
+  border-radius:50%;
+  background:#000;
+}
+.sound-orb-on{
+  opacity:1;
+  animation:soundPulse 1.2s infinite;
+}
+@keyframes soundPulse{
+  0%{ transform:scale(1); }
+  50%{ transform:scale(1.18); }
+  100%{ transform:scale(1); }
 }
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-  margin-top: 10px;
-  background: #141414;
+/* BARRA PROGRESO CUSTOM */
+.progress-wrap{
+  width:78%;
+  max-width:780px;
+  height:14px;
+  background:rgba(0,0,0,0.8);
+  margin:6px auto 4px;
+  border-radius:999px;
+  border:2px solid rgba(0,255,230,0.3);
+  overflow:hidden;
+  box-shadow:0 0 16px rgba(0,255,230,0.45);
+}
+.progress{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#ff0033,#ffd200,#b24bff,#0044ff,#00ff66);
+  background-size:500% 100%;
+  transition:width .1s linear;
 }
 
-th, td {
-  border: 1px solid #333;
-  padding: 6px 8px;
-  font-size: 13px;
-  text-align: left;
+/* TIEMPO */
+.time{
+  text-align:center;
+  color:#00ffbf;
+  font-family:monospace;
+  margin-top:4px;
+  font-size:13px;
+  text-shadow:0 0 6px rgba(0,255,191,0.4);
 }
 
-th {
-  background: #00ffc8;
-  color: #000;
+/* BOTONES */
+.controls-row{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  align-items:center;
+  margin:10px 0 0;
 }
-
-tr:nth-child(even) td {
-  background: #101010;
-}
-
-.nota {
-  text-align: center;
-  font-size: 12px;
-  color: #bbb;
-  margin-top: 8px;
-}
-
-/* SIMILARES */
-.similares-box {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-}
-
-.similares-label {
-  color: #a5ffe5;
-}
-
-.similares-box select {
-  flex: 1;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid #00ffc8;
-  background: #050513;
-  color: #00ffc8;
-}
-
-.oculto {
-  display: none;
-}
-
-/* BOTÓN CONTACTO */
-.contacto-wrapper {
-  margin-top: 18px;
-  text-align: center;
-}
-
-.btn-contacto {
-  position: relative;
-  display: inline-block;
-  padding: 10px 26px;
-  border-radius: 999px;
-  border: 1px solid #00ffc8;
-  background: transparent;
-  color: #a8ffe8;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  overflow: hidden;
-  text-shadow: 0 0 4px #000;
+.btn{
+  background: radial-gradient(circle at top,
+              #00ffe6 0%,
+              #00a4ff 45%,
+              #00264d 100%);
+  border:none;
+  color:#000;
+  padding:8px 16px;
+  border-radius:22px;
+  cursor:pointer;
+  font-weight:700;
+  font-size:13px;
+  text-shadow:0 0 4px rgba(255,255,255,0.5);
   box-shadow:
-      0 0 14px rgba(0,255,255,0.7),
-      0 0 30px rgba(0,0,0,1);
+    0 0 12px rgba(0,255,230,0.9),
+    0 0 24px rgba(0,164,255,0.6);
+  transition:transform .12s ease-out, box-shadow .12s ease-out, filter .12s;
+}
+.btn:hover{
+  transform:translateY(-1px) scale(1.04);
+  box-shadow:
+    0 0 18px rgba(0,255,230,1),
+    0 0 34px rgba(0,164,255,0.9);
+  filter:brightness(1.1);
+}
+.btn:active{
+  transform:translateY(1px) scale(0.97);
+}
+.btn-main{
+  padding:9px 22px;
+  font-size:16px;
+}
+.btn-outline{
+  background:transparent;
+  color:#00ffe6;
+  border:2px solid #00ffe6;
+  box-shadow:0 0 12px rgba(0,255,230,0.8);
 }
 
-.btn-contacto span.icono {
-  margin-right: 6px;
+/* SELECT CANCIONES */
+.song-select{
+  display:block;
+  margin:18px auto 18px;
+  width:60%;
+  min-width:260px;
+  height:40px;
+  background:#000;
+  color:#00ffbf;
+  padding:8px 12px;
+  border-radius:999px;
+  border:2px solid #00ffe6;
+  font-family:Verdana,monospace;
+  font-size:14px;
+  box-shadow:0 0 16px rgba(0,255,230,0.5);
+  outline:none;
+}
+.song-select:focus{
+  border-color:#00ffbf;
+  box-shadow:0 0 22px rgba(0,255,191,0.8);
 }
 
-.btn-contacto::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  background: linear-gradient(120deg,
-              rgba(0,255,255,0),
-              rgba(0,255,180,0.8),
-              rgba(0,255,255,0));
-  opacity: 0.35;
-  transform: translateX(-100%);
-  animation: scan 3s linear infinite;
-  pointer-events: none;
+/* FRASE “FUEGO” */
+.phrase-wrapper{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  margin-top:28px;
+  margin-bottom:26px;
+}
+.phrase-box{
+  width:72%;
+  min-width:320px;
+  background:rgba(0,0,0,0.96);
+  padding:26px;
+  border-radius:16px;
+  color:#fff;
+  font-size:30px;
+  font-weight:800;
+  letter-spacing:6px;
+  text-align:center;
+  border:3px solid rgba(0,255,230,0.9);
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.8),
+    0 0 34px rgba(0,255,230, calc(0.20 * var(--pulse)));
+  transition: box-shadow .12s linear,
+              transform .12s linear,
+              text-shadow .12s linear;
+}
+.phrase-sub{
+  margin-top:12px;
+  color:var(--green);
+  font-size:14px;
+  text-shadow:0 0 6px rgba(0,255,34,0.6);
 }
 
-.btn-contacto::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  box-shadow: 0 0 20px rgba(0,255,120,0.4);
-  opacity: 0;
-  transition: opacity 0.25s ease-out;
+/* FOOTER */
+.footer{
+  margin-top:4px;
+  color:var(--green);
+  text-align:center;
+  font-size:12px;
+  text-shadow:0 0 6px rgba(0,255,34,0.4);
 }
 
-.btn-contacto:hover::after {
-  opacity: 1;
+/* CONTADOR NEROX */
+#contador {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0,0,0,0.85);
+  padding: 12px 25px;
+  color: #00ff00;
+  border: 3px solid #00ff00;
+  font-size: 18px;
+  border-radius: 12px;
+  text-shadow: 0 0 12px #00ff00;
+  box-shadow: 0 0 30px #00ff00;
+  animation: pulso 1.5s infinite alternate;
+  z-index: 9999;
 }
-
-@keyframes scan {
-  0%   { transform: translateX(-120%); }
-  100% { transform: translateX(120%); }
-}
-
-/* PIE */
-.pie {
-  margin-top: 18px;
-  text-align: center;
-  font-size: 12px;
-  color: #66ffe6;
-}
-
-#pie-linea2 {
-  color: #00ff66;
-}
-
-#pie-fecha {
-  color: #22c5ff;
-  margin-top: 4px;
+@keyframes pulso {
+  0%   { transform: scale(1); }
+  100% { transform: scale(1.12); }
 }
 
 /* RESPONSIVE */
-@media(max-width: 768px){
-  .contenedor {
-    padding: 14px;
+@media (max-width:900px){
+  :root{--player-width:95vw;}
+  #viz{height:160px;}
+  .phrase-box{
+    font-size:20px;
+    letter-spacing:4px;
+    padding:16px;
+    width:86%;
   }
-  .header-top {
-    flex-direction: column;
-  }
-  .logo-box img {
-    max-width: 95px;
-  }
-  .titulos-linea1 {
-    font-size: 18px;
-  }
-  .titulos-linea2 {
-    font-size: 14px;
-  }
-  .titulos-linea3,
-  .titulos-linea4 {
-    font-size: 12px;
-  }
-}
-
-@media(max-width: 480px){
-  .buscador {
-    flex-direction: column;
-  }
-  .buscador button {
-    width: 100%;
-    max-width: 260px;
-  }
-  .btn-contacto {
-    width: 100%;
-    max-width: 280px;
-  }
+  .progress-wrap{ width:88%; }
+  .song-select{ width:86%; }
 }
