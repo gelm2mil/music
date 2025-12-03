@@ -278,6 +278,35 @@ function animate(){
     draw();
 }
 </script>
+<script>
+// =========================
+//     PWA INSTALL LOGIC
+// =========================
+let deferredPrompt;
+const installBtn = document.getElementById("installBtn");
+
+installBtn.style.display = "none"; // oculto por defecto
+
+window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = "inline-block"; // mostrar botón neon
+});
+
+installBtn.addEventListener("click", async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+
+    if (outcome === "accepted") {
+        console.log("User accepted install");
+        installBtn.innerHTML = "✔ INSTALADO";
+        installBtn.style.background = "#00ffcc";
+    }
+
+    deferredPrompt = null;
+});
+</script>
 
 </body>
 </html>
