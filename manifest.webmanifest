@@ -1,12 +1,12 @@
 {
-  "name": "GELM – Música Variada",
-  "short_name": "GELM Music",
+  "name": "GELM Música Variada",
+  "short_name": "Música GELM",
+  "description": "Reproductor Neon Pro Max – GELM",
   "start_url": "/music/index.html",
   "scope": "/music/",
   "display": "standalone",
   "background_color": "#000000",
-  "theme_color": "#00ffe6",
-  "orientation": "portrait",
+  "theme_color": "#00f6ff",
   "icons": [
     {
       "src": "icons/icon-192.png",
