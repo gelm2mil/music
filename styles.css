@@ -31,20 +31,16 @@ body {
   align-items: center;
   gap: 15px;
   margin-bottom: 15px;
-}
-
-/* === IMPORTANTE PARA EFECTOS ULTRA === */
-.logo-wrap {
-  position: relative;   /* Necesario para animaciones neon D */
+  position: relative;
 }
 
 .logo-img {
   width: 55px;
   height: 55px;
   border-radius: 14px;
-  box-shadow: 0 0 12px #00eaff;
-  position: relative;   /* Requerido para crear aura ::after */
-  z-index: 5;           /* Encima del aura */
+  position: relative;
+  z-index: 2;
+  transition: 0.2s ease-out;
 }
 
 /* Texto */
@@ -68,7 +64,6 @@ body {
   border-radius: 50%;
   animation: blink 0.7s infinite alternate;
 }
-
 @keyframes blink {
   from { opacity: .2; }
   to { opacity: 1; }
@@ -79,9 +74,11 @@ body {
   width: 100%;
   border-radius: 12px;
   box-shadow: 0 0 22px #00eaff70;
+  position: relative;
+  transition: 0.3s ease-out;
 }
 
-/* NOW PLAYING */
+/* Info canción */
 .now-playing {
   margin-top: 10px;
   font-size: 16px;
@@ -89,7 +86,7 @@ body {
   padding-left: 5px;
 }
 
-/* CONTROLS */
+/* CONTROLES */
 .controls-row {
   display: flex;
   justify-content: space-around;
@@ -104,12 +101,6 @@ body {
   color: #00eaff;
   box-shadow: 0 0 12px #00eaff60;
   font-size: 18px;
-  transition: 0.2s;
-}
-
-.ctrl-btn:hover {
-  transform: scale(1.08);
-  box-shadow: 0 0 16px #00fff5;
 }
 
 .ctrl-btn.active {
@@ -117,7 +108,7 @@ body {
   box-shadow: 0 0 14px #00eaff;
 }
 
-/* PROGRESS BAR */
+/* Barra de progreso */
 .progress-bar {
   width: 100%;
   height: 7px;
@@ -141,7 +132,7 @@ body {
   font-size: 12px;
 }
 
-/* LISTA DE CANCIONES */
+/* LISTA */
 .list-header {
   margin-top: 20px;
   font-size: 16px;
@@ -161,73 +152,53 @@ body {
   padding: 10px 5px;
   border-radius: 12px;
   cursor: pointer;
-  transition: 0.2s;
 }
 
 .track-item:hover {
   background: #00324560;
-  transform: translateX(4px);
 }
 
 .track-item.active {
   background: #004c6a;
-  box-shadow: inset 0 0 10px #00eaff80;
 }
 
 .track-thumb img {
   width: 40px;
   border-radius: 8px;
+  position: relative;
 }
 
-/* FOOTER */
-.footer {
-  text-align: center;
-  font-size: 11px;
-  opacity: 0.8;
-  margin-top: 25px;
+
+/* ===========================================
+   EFECTO D — ICONOS NEÓN REACTIVOS A LA MÚSICA
+   =========================================== */
+
+.logo-pulse,
+.art-pulse,
+.thumb-pulse {
+  animation: pulseBoth 1.3s infinite ease-in-out;
+  filter: drop-shadow(0 0 14px #00eaff);
 }
 
-/* ===========================
-   BANNERS DE CATEGORÍAS
-   =========================== */
-
-.category-banner {
-  font-size: 19px;
-  font-weight: bold;
-  padding: 10px 5px;
-  margin: 15px 0 5px 0;
-  color: #00eaff;
-  text-shadow: 0 0 8px #00eaff;
-  border-bottom: 2px solid #00eaff40;
-  opacity: 0.9;
-}
-
-/* ==========================================================
-   EFECTO ULTRA-D – LOGO CON LATIDO + AURA NEÓN ANIMADA
-   ========================================================== */
-
-.logo-pulse {
-  animation: gelmPulse 1.2s infinite ease-in-out;
-  filter: drop-shadow(0 0 12px #00eaff) brightness(1.4);
-}
-
-@keyframes gelmPulse {
+@keyframes pulseBoth {
   0% {
     transform: scale(1);
-    filter: drop-shadow(0 0 8px #00eaff) brightness(1.2);
+    filter: drop-shadow(0 0 6px #00eaff);
   }
   50% {
-    transform: scale(1.22);
-    filter: drop-shadow(0 0 26px #00fff2) brightness(1.7);
+    transform: scale(1.14);
+    filter: drop-shadow(0 0 26px #00fff2);
   }
   100% {
     transform: scale(1);
-    filter: drop-shadow(0 0 8px #00eaff) brightness(1.2);
+    filter: drop-shadow(0 0 6px #00eaff);
   }
 }
 
-/* AURA ILUMINADA QUE “RESPIRA” */
-.logo-pulse::after {
+/* Aura luminosa */
+.logo-pulse::after,
+.art-pulse::after,
+.thumb-pulse::after {
   content: "";
   position: absolute;
   width: 135%;
@@ -235,15 +206,15 @@ body {
   top: -18%;
   left: -18%;
   border-radius: 50%;
-  background: radial-gradient(rgba(0,255,255,0.25), transparent 75%);
-  animation: gelmAura 1.7s infinite ease-in-out;
-  filter: blur(4px);
-  pointer-events: none;
+  background: radial-gradient(rgba(0,255,255,0.25), transparent 70%);
+  animation: auraSpin 1.9s infinite ease-in-out;
   z-index: 1;
+  pointer-events: none;
 }
 
-@keyframes gelmAura {
+@keyframes auraSpin {
   0% { opacity: 0.25; transform: scale(1); }
-  50% { opacity: 0.55; transform: scale(1.35); }
+  50% { opacity: 0.55; transform: scale(1.3); }
   100% { opacity: 0.25; transform: scale(1); }
 }
+
