@@ -33,11 +33,18 @@ body {
   margin-bottom: 15px;
 }
 
+/* === IMPORTANTE PARA EFECTOS ULTRA === */
+.logo-wrap {
+  position: relative;   /* Necesario para animaciones neon D */
+}
+
 .logo-img {
   width: 55px;
   height: 55px;
   border-radius: 14px;
   box-shadow: 0 0 12px #00eaff;
+  position: relative;   /* Requerido para crear aura ::after */
+  z-index: 5;           /* Encima del aura */
 }
 
 /* Texto */
@@ -61,6 +68,7 @@ body {
   border-radius: 50%;
   animation: blink 0.7s infinite alternate;
 }
+
 @keyframes blink {
   from { opacity: .2; }
   to { opacity: 1; }
@@ -96,6 +104,12 @@ body {
   color: #00eaff;
   box-shadow: 0 0 12px #00eaff60;
   font-size: 18px;
+  transition: 0.2s;
+}
+
+.ctrl-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 16px #00fff5;
 }
 
 .ctrl-btn.active {
@@ -147,14 +161,17 @@ body {
   padding: 10px 5px;
   border-radius: 12px;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 .track-item:hover {
   background: #00324560;
+  transform: translateX(4px);
 }
 
 .track-item.active {
   background: #004c6a;
+  box-shadow: inset 0 0 10px #00eaff80;
 }
 
 .track-thumb img {
@@ -171,32 +188,9 @@ body {
 }
 
 /* ===========================
-   EFECTO A — LOGO PULSANTE
+   BANNERS DE CATEGORÍAS
    =========================== */
 
-.logo-pulse {
-  animation: pulseLogo 1.2s infinite alternate ease-in-out;
-}
-
-@keyframes pulseLogo {
-  0% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 6px #00eaff);
-  }
-  100% {
-    transform: scale(1.08);
-    filter: drop-shadow(0 0 14px #00eaff);
-  }
-}
-.category-banner {
-  font-size: 20px;
-  font-weight: bold;
-  padding: 10px;
-  margin: 15px 0 5px 0;
-  color: #00eaff;
-  text-shadow: 0 0 8px #00eaff;
-  border-bottom: 2px solid #00eaff50;
-}
 .category-banner {
   font-size: 19px;
   font-weight: bold;
@@ -207,8 +201,9 @@ body {
   border-bottom: 2px solid #00eaff40;
   opacity: 0.9;
 }
+
 /* ==========================================================
-   ICONO DINÁMICO DE REPRODUCCIÓN — EFECTO LATIDO NEÓN
+   EFECTO ULTRA-D – LOGO CON LATIDO + AURA NEÓN ANIMADA
    ========================================================== */
 
 .logo-pulse {
@@ -222,8 +217,8 @@ body {
     filter: drop-shadow(0 0 8px #00eaff) brightness(1.2);
   }
   50% {
-    transform: scale(1.12);
-    filter: drop-shadow(0 0 20px #00fff2) brightness(1.6);
+    transform: scale(1.22);
+    filter: drop-shadow(0 0 26px #00fff2) brightness(1.7);
   }
   100% {
     transform: scale(1);
@@ -231,22 +226,24 @@ body {
   }
 }
 
-/* Onda luminosa alrededor del logo */
+/* AURA ILUMINADA QUE “RESPIRA” */
 .logo-pulse::after {
   content: "";
   position: absolute;
-  width: 120%;
-  height: 120%;
-  top: -10%;
-  left: -10%;
+  width: 135%;
+  height: 135%;
+  top: -18%;
+  left: -18%;
   border-radius: 50%;
-  background: radial-gradient(rgba(0,255,255,0.25), transparent 70%);
-  animation: gelmAura 1.6s infinite ease-in-out;
+  background: radial-gradient(rgba(0,255,255,0.25), transparent 75%);
+  animation: gelmAura 1.7s infinite ease-in-out;
+  filter: blur(4px);
   pointer-events: none;
+  z-index: 1;
 }
 
 @keyframes gelmAura {
   0% { opacity: 0.25; transform: scale(1); }
-  50% { opacity: 0.55; transform: scale(1.25); }
+  50% { opacity: 0.55; transform: scale(1.35); }
   100% { opacity: 0.25; transform: scale(1); }
 }
