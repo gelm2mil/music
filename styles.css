@@ -217,4 +217,37 @@ body {
   50% { opacity: 0.55; transform: scale(1.3); }
   100% { opacity: 0.25; transform: scale(1); }
 }
+/* =====================================================
+   FIX FOOTER VERDE NEÓN
+===================================================== */
+
+.footer {
+  text-align: center;
+  font-size: 11px;
+  margin-top: 25px;
+  opacity: 0.9;
+  color: #00ffbf; /* Verde neón real */
+  text-shadow: 0 0 6px #00ffbf, 0 0 12px #00ffaa;
+}
+
+
+/* =====================================================
+   AJUSTE DEL LARGO DEL PLAYER
+===================================================== */
+
+.player-card {
+  max-width: 480px;
+  margin: auto;
+  background: rgba(0,0,10,0.6);
+  padding: 20px;
+  border-radius: 22px;
+  box-shadow: 0 0 18px #00eaff80;
+  overflow: hidden;           /* <-- evita que crezca por efectos */
+}
+
+.page-bg {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
 
