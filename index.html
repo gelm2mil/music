@@ -32,7 +32,7 @@
     <!-- CABECERA -->
     <div class="card-header">
       <div class="logo-wrap">
-        <img id="logo-mini" src="icons/icon-512.png" class="logo-img" alt="GELM">
+        <img id="logo-mini" src="icons/icon-192.png" class="logo-img" alt="GELM">
       </div>
 
       <div class="header-text">
@@ -89,12 +89,9 @@
 </div>
 
 <!-- ================================
-        SCRIPT DEL PLAYER
+     SCRIPT DEL PLAYER
 ================================ -->
 <script>
-// ==========================
-// FORMATEO
-// ==========================
 const fmt = t => {
   if (!t || isNaN(t)) return "00:00";
   const m = Math.floor(t / 60);
@@ -102,9 +99,6 @@ const fmt = t => {
   return String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
 };
 
-// ==========================
-// ELEMENTOS
-// ==========================
 const audio = document.getElementById("audio");
 const playBtn = document.getElementById("play-btn");
 const volBtn = document.getElementById("vol-btn");
@@ -121,29 +115,22 @@ const gelmLogo = document.getElementById("logo-mini");
 let tracks = [];
 let currentIndex = -1;
 let shuffleMode = true;
-let userEverPlayed = false;
 
-// ==========================
-// CARGAR LISTA
-// ==========================
+// CARGA LISTA
 fetch("musica.json")
   .then(r => r.json())
   .then(data => {
-    tracks = data; // ← ya vienen ordenadas con categorías
+    tracks = data;
     renderTrackList();
     currentIndex = shuffleMode ? getRandomIndex() : 0;
     setCurrentTrack(currentIndex, false);
   });
 
-// ==========================
 // RENDER LISTA
-// ==========================
 function renderTrackList() {
   trackListEl.innerHTML = "";
 
   tracks.forEach((t, i) => {
-
-    // ⭐ si es categoría
     if (t.category) {
       const cat = document.createElement("div");
       cat.className = "category-banner";
@@ -152,14 +139,13 @@ function renderTrackList() {
       return;
     }
 
-    // ⭐ si es canción
     const row = document.createElement("div");
     row.className = "track-item";
     row.dataset.index = i;
 
     row.innerHTML = `
       <div class="track-thumb">
-        <img src="icons/icon-512.png">
+        <img src="icons/icon-192.png">
       </div>
       <div class="track-info">
         <div class="track-name">${t.title}</div>
@@ -173,9 +159,7 @@ function renderTrackList() {
   updateActiveRow();
 }
 
-// ==========================
-// ACTUALIZAR ACTIVO
-// ==========================
+// ACTUALIZA ACTIVO
 function updateActiveRow() {
   const rows = trackListEl.querySelectorAll(".track-item");
   rows.forEach(r => r.classList.remove("active"));
@@ -183,11 +167,8 @@ function updateActiveRow() {
   if (active) active.classList.add("active");
 }
 
-// ==========================
 // ALEATORIO
-// ==========================
 function getRandomIndex() {
-  if (tracks.length <= 1) return 0;
   let r = currentIndex;
   while (!tracks[r] || tracks[r].category || r === currentIndex) {
     r = Math.floor(Math.random() * tracks.length);
@@ -195,9 +176,7 @@ function getRandomIndex() {
   return r;
 }
 
-// ==========================
 // CAMBIAR PISTA
-// ==========================
 function setCurrentTrack(i, autoplay) {
   currentIndex = i;
 
@@ -209,16 +188,13 @@ function setCurrentTrack(i, autoplay) {
 
   if (autoplay) {
     audio.play();
-    userEverPlayed = true;
     playBtn.textContent = "⏸";
   } else {
     playBtn.textContent = "▶";
   }
 }
 
-// ==========================
-// CONTROLES
-// ==========================
+// PLAY / PAUSE
 playBtn.addEventListener("click", () => {
   if (audio.paused) {
     audio.play();
@@ -229,7 +205,7 @@ playBtn.addEventListener("click", () => {
   }
 });
 
-// ⭐ EFECTO EN LOGO
+// EFECTO LOGO
 audio.addEventListener("play", () =>
   gelmLogo.classList.add("logo-pulse")
 );
@@ -257,7 +233,7 @@ volBtn.addEventListener("click", () => {
   volBtn.textContent = audio.muted ? "🔈" : "🔊";
 });
 
-// FIN DE CANCIÓN
+// FINALIZA CANCIÓN
 audio.addEventListener("ended", () => {
   shuffleMode
     ? setCurrentTrack(getRandomIndex(), true)
@@ -280,18 +256,14 @@ document.querySelector(".progress-bar").addEventListener("click", (e) => {
   audio.currentTime = pct * audio.duration;
 });
 
-// ==========================
-// SPLASH AUTO-HIDE
-// ==========================
+// OCULTAR SPLASH
 document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     document.getElementById("splash").classList.add("splash-hide");
   }, 900);
 });
 
-// ==========================
 // SERVICE WORKER
-// ==========================
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("service-worker.js");
 }
