@@ -1,5 +1,5 @@
 [
-  { "category": "Baladas Románticas" },
+  { "category": "★ Baladas Románticas" },
 
   { "title": "Maldito el Día", "url": "https://files.catbox.moe/vrs02q.mp3" },
   { "title": "Amor Sin Alma", "url": "https://files.catbox.moe/o4rutg.mp3" },
@@ -16,12 +16,10 @@
   { "title": "Me Pides Que Te Olvide", "url": "https://files.catbox.moe/1t9ken.mp3" },
   { "title": "Para Que No Me Olvides", "url": "https://files.catbox.moe/2xtw9j.mp3" },
   { "title": "Señora", "url": "https://files.catbox.moe/vjqymp.mp3" },
-  { "title": "Time In a Bottle", "url": "https://files.catbox.moe/ed14uc.mp3" },
+  { "title": "Time in a Bottle", "url": "https://files.catbox.moe/ed14uc.mp3" },
   { "title": "Perfect (Ed Sheeran)", "url": "https://files.catbox.moe/dm2eig.mp3" },
 
-
-
-  { "category": "Baladas en Español" },
+  { "category": "★ Baladas en Español" },
 
   { "title": "Casas de Cartón", "url": "https://files.catbox.moe/hqldkt.mp3" },
   { "title": "El Chico de la Armónica", "url": "https://files.catbox.moe/ruh1y3.mp3" },
@@ -41,80 +39,68 @@
   { "title": "Durmiendo con la Luna", "url": "https://files.catbox.moe/meg98d.mp3" },
   { "title": "Hojas Secas", "url": "https://files.catbox.moe/urerkz.mp3" },
 
-
-
-  { "category": "Rock Internacional" },
+  { "category": "★ Rock Internacional" },
 
   { "title": "She Will Be Loved", "url": "https://files.catbox.moe/juxhpf.mp3" },
-  { "title": "Secrets – OneRepublic", "url": "https://files.catbox.moe/f8s83b.mp3" },
-  { "title": "Lonely – Akon", "url": "https://files.catbox.moe/i2p8nb.mp3" },
+  { "title": "Secrets", "url": "https://files.catbox.moe/f8s83b.mp3" },
+  { "title": "Lonely", "url": "https://files.catbox.moe/i2p8nb.mp3" },
   { "title": "Better Off Alone", "url": "https://files.catbox.moe/4mmb5i.mp3" },
   { "title": "Two Times", "url": "https://files.catbox.moe/k0of4z.mp3" },
-  { "title": "Sk8er Boi – Avril Lavigne", "url": "https://files.catbox.moe/xqzop2.mp3" },
-  { "title": "All the Small Things – Blink 182", "url": "https://files.catbox.moe/dgozl1.mp3" },
-  { "title": "First Date – Blink 182", "url": "https://files.catbox.moe/ogibau.mp3" },
-  { "title": "I Miss You – Blink 182", "url": "https://files.catbox.moe/puv2xi.mp3" },
-  { "title": "What's My Age Again – Blink 182", "url": "https://files.catbox.moe/7kqwc4.mp3" },
+  { "title": "Sk8er Boi", "url": "https://files.catbox.moe/xqzop2.mp3" },
+  { "title": "All the Small Things", "url": "https://files.catbox.moe/dgozl1.mp3" },
+  { "title": "First Date", "url": "https://files.catbox.moe/ogibau.mp3" },
+  { "title": "I Miss You", "url": "https://files.catbox.moe/puv2xi.mp3" },
+  { "title": "What's My Age Again", "url": "https://files.catbox.moe/7kqwc4.mp3" },
   { "title": "Hooked on a Feeling", "url": "https://files.catbox.moe/b0t3m1.mp3" },
   { "title": "Sweet Child O' Mine", "url": "https://files.catbox.moe/q6pv72.mp3" },
-  { "title": "Fortunate Son – CCR", "url": "https://files.catbox.moe/gfq3nr.mp3" },
-  { "title": "Yellow – Coldplay", "url": "https://files.catbox.moe/k10ybl.mp3" },
-  { "title": "Laid – James", "url": "https://files.catbox.moe/2e38nf.mp3" },
-  { "title": "Firework – Katy Perry", "url": "https://files.catbox.moe/8ivwo7.mp3" },
-  { "title": "Zombie – The Cranberries", "url": "https://files.catbox.moe/voyljf.mp3" },
-  { "title": "Every Breath You Take – Police", "url": "https://files.catbox.moe/finz22.mp3" },
-  { "title": "Bitter Sweet Symphony – The Verve", "url": "https://files.catbox.moe/2vogqw.mp3" },
+  { "title": "Fortunate Son", "url": "https://files.catbox.moe/gfq3nr.mp3" },
+  { "title": "Yellow", "url": "https://files.catbox.moe/k10ybl.mp3" },
+  { "title": "Laid", "url": "https://files.catbox.moe/2e38nf.mp3" },
+  { "title": "Firework", "url": "https://files.catbox.moe/8ivwo7.mp3" },
+  { "title": "Zombie", "url": "https://files.catbox.moe/voyljf.mp3" },
+  { "title": "Every Breath You Take", "url": "https://files.catbox.moe/finz22.mp3" },
+  { "title": "Bitter Sweet Symphony", "url": "https://files.catbox.moe/2vogqw.mp3" },
 
+  { "category": "★ Rock en Español" },
 
-  
-  { "category": "Rock en Español" },
+  { "title": "Mujer Amante", "url": "https://files.catbox.moe/65hpdn.mp3" },
+  { "title": "Música Ligera", "url": "https://files.catbox.moe/3vty58.mp3" },
+  { "title": "Célula que Explota", "url": "https://files.catbox.moe/er2ljm.mp3" },
+  { "title": "No Dejes Que", "url": "https://files.catbox.moe/u7hbqs.mp3" },
+  { "title": "Te Vi Venir", "url": "https://files.catbox.moe/nkjqyq.mp3" },
 
-  { "title": "Mujer Amante – Rata Blanca", "url": "https://files.catbox.moe/65hpdn.mp3" },
-  { "title": "Música Ligera – Soda Stereo", "url": "https://files.catbox.moe/3vty58.mp3" },
-  { "title": "Celula Que Explota – Caifanes", "url": "https://files.catbox.moe/er2ljm.mp3" },
-  { "title": "No Dejes Que – Caifanes", "url": "https://files.catbox.moe/u7hbqs.mp3" },
-  { "title": "Te Vi Venir – Sin Bandera", "url": "https://files.catbox.moe/nkjqyq.mp3" },
+  { "category": "★ Pop / Dance / Hits" },
 
-
-
-  { "category": "Pop / Dance / Hits" },
-
-  { "title": "Believe – Cher", "url": "https://files.catbox.moe/rpygvg.mp3" },
-  { "title": "Toxic – Britney Spears", "url": "https://files.catbox.moe/gw6npc.mp3" },
-  { "title": "Umbrella – Rihanna", "url": "https://files.catbox.moe/m2v6cp.mp3" },
+  { "title": "Believe", "url": "https://files.catbox.moe/rpygvg.mp3" },
+  { "title": "Toxic", "url": "https://files.catbox.moe/gw6npc.mp3" },
+  { "title": "Umbrella", "url": "https://files.catbox.moe/m2v6cp.mp3" },
   { "title": "Hey Mickey", "url": "https://files.catbox.moe/toyttp.mp3" },
   { "title": "Sweet Home Alabama", "url": "https://files.catbox.moe/9sq0vj.mp3" },
-  { "title": "Where Is the Love – BEP", "url": "https://files.catbox.moe/qp9yrr.mp3" },
-  { "title": "What's Up – 4 Non Blondes", "url": "https://files.catbox.moe/a600o3.mp3" },
-  { "title": "See You Again – Wiz Khalifa", "url": "https://files.catbox.moe/uos5oy.mp3" },
+  { "title": "Where Is the Love", "url": "https://files.catbox.moe/qp9yrr.mp3" },
+  { "title": "What's Up", "url": "https://files.catbox.moe/a600o3.mp3" },
+  { "title": "See You Again", "url": "https://files.catbox.moe/uos5oy.mp3" },
 
+  { "category": "★ Electrónica / EDM" },
 
-
-  { "category": "Electrónica / EDM" },
-
-  { "title": "Titanium – David Guetta", "url": "https://files.catbox.moe/tssalf.mp3" },
+  { "title": "Titanium", "url": "https://files.catbox.moe/tssalf.mp3" },
   { "title": "Turn Down for What", "url": "https://files.catbox.moe/ci1ukx.mp3" },
-  { "title": "Nova – Ahrix", "url": "https://files.catbox.moe/21plbr.mp3" },
-  { "title": "Summertime – K391", "url": "https://files.catbox.moe/ne0je5.mp3" },
-  { "title": "NCS – Janji", "url": "https://files.catbox.moe/yi1cf0.mp3" },
-  { "title": "Electro – Varios", "url": "https://files.catbox.moe/db6trl.mp3" },
+  { "title": "Nova", "url": "https://files.catbox.moe/21plbr.mp3" },
+  { "title": "Summertime", "url": "https://files.catbox.moe/ne0je5.mp3" },
+  { "title": "Janji – NCS", "url": "https://files.catbox.moe/yi1cf0.mp3" },
+  { "title": "Electro", "url": "https://files.catbox.moe/db6trl.mp3" },
   { "title": "Up", "url": "https://files.catbox.moe/f1n1u8.mp3" },
   { "title": "Heaven", "url": "https://files.catbox.moe/9x6djb.mp3" },
 
-
-
-  { "category": "Retro / Classics" },
+  { "category": "★ Retro / Classics" },
 
   { "title": "Believe in Love", "url": "https://files.catbox.moe/ij9nfi.mp3" },
   { "title": "Little Bitty Pretty One", "url": "https://files.catbox.moe/7x6qah.mp3" },
-  { "title": "Baba O’Riley – The Who", "url": "https://files.catbox.moe/57zzje.mp3" },
-  { "title": "Behind Blue Eyes – The Who", "url": "https://files.catbox.moe/dvmzzw.mp3" },
-  { "title": "Send Me On My Way – Rusted Root", "url": "https://files.catbox.moe/vdsngj.mp3" },
+  { "title": "Baba O’Riley", "url": "https://files.catbox.moe/57zzje.mp3" },
+  { "title": "Behind Blue Eyes", "url": "https://files.catbox.moe/dvmzzw.mp3" },
+  { "title": "Send Me On My Way", "url": "https://files.catbox.moe/vdsngj.mp3" },
   { "title": "Rock Mi Après Ski Party", "url": "https://files.catbox.moe/01cedx.mp3" },
 
-
-
-  { "category": "Regional / Rancheras" },
+  { "category": "★ Regional / Rancheras" },
 
   { "title": "Maracas", "url": "https://files.catbox.moe/pbtkod.mp3" },
   { "title": "Nadie Es Eterno", "url": "https://files.catbox.moe/yp35vb.mp3" },
@@ -123,53 +109,43 @@
   { "title": "El Taxi", "url": "https://files.catbox.moe/k2l2ax.mp3" },
   { "title": "El Último Trago", "url": "https://files.catbox.moe/qzdw3n.mp3" },
 
-
-
-  { "category": "Latino / Pop Latino" },
+  { "category": "★ Latino / Pop Latino" },
 
   { "title": "Por Amarte", "url": "https://files.catbox.moe/825q8j.mp3" },
   { "title": "Dejaría Todo", "url": "https://files.catbox.moe/97gwd1.mp3" },
   { "title": "Nunca Te Olvidaré", "url": "https://files.catbox.moe/r2yqii.mp3" },
-  { "title": "Rosas – La Oreja de Van Gogh", "url": "https://files.catbox.moe/3cily5.mp3" },
+  { "title": "Rosas", "url": "https://files.catbox.moe/3cily5.mp3" },
   { "title": "Perfecta", "url": "https://files.catbox.moe/19qwat.mp3" },
   { "title": "Sirena", "url": "https://files.catbox.moe/qovaii.mp3" },
   { "title": "Kilómetros", "url": "https://files.catbox.moe/v5wx28.mp3" },
   { "title": "Mientes Tan Bien", "url": "https://files.catbox.moe/4m7rul.mp3" },
 
+  { "category": "★ Punk / Pop Punk" },
 
-
-  { "category": "Punk / Pop Punk" },
-
-  { "title": "In Too Deep – Sum 41", "url": "https://files.catbox.moe/bvbwx8.mp3" },
-  { "title": "Im Just a Kid – Simple Plan", "url": "https://files.catbox.moe/tniqap.mp3" },
-  { "title": "Welcome To My Life – Simple Plan", "url": "https://files.catbox.moe/x59as6.mp3" },
+  { "title": "In Too Deep", "url": "https://files.catbox.moe/bvbwx8.mp3" },
+  { "title": "Im Just a Kid", "url": "https://files.catbox.moe/tniqap.mp3" },
+  { "title": "Welcome To My Life", "url": "https://files.catbox.moe/x59as6.mp3" },
   { "title": "Stay Together for the Kids", "url": "https://files.catbox.moe/m76qtn.mp3" },
 
-
-
-  { "category": "Country / Folk / Soft Rock" },
+  { "category": "★ Country / Folk / Soft Rock" },
 
   { "title": "I Got a Name", "url": "https://files.catbox.moe/tieh93.mp3" },
   { "title": "Driving My Life Away", "url": "https://files.catbox.moe/bizgat.mp3" },
   { "title": "The Good Life", "url": "https://files.catbox.moe/ynsjkw.mp3" },
 
-
-
-  { "category": "Reggae / Ska / Garage" },
+  { "category": "★ Reggae / Ska / Garage" },
 
   { "title": "Skalavera", "url": "https://files.catbox.moe/05xn1e.mp3" },
   { "title": "La Flaca", "url": "https://files.catbox.moe/3s9ozf.mp3" },
-  { "title": "Pum Up the Jam", "url": "https://files.catbox.moe/4u8iov.mp3" },
+  { "title": "Pump Up the Jam", "url": "https://files.catbox.moe/4u8iov.mp3" },
 
-
-
-  { "category": "Otros / Especiales" },
+  { "category": "★ Otros / Especiales" },
 
   { "title": "A Thousand Miles", "url": "https://files.catbox.moe/ae7u4f.mp3" },
   { "title": "A Thousand Years", "url": "https://files.catbox.moe/f9v033.mp3" },
   { "title": "Nights Alright", "url": "https://files.catbox.moe/hq02kb.mp3" },
-  { "title": "Friednships", "url": "https://files.catbox.moe/wqznv4.mp3" },
-  { "title": "Nova (otra versión)", "url": "https://files.catbox.moe/322r43.mp3" },
+  { "title": "Friendships", "url": "https://files.catbox.moe/wqznv4.mp3" },
+  { "title": "Nova (Versión 2)", "url": "https://files.catbox.moe/322r43.mp3" },
   { "title": "La Raíz", "url": "https://files.catbox.moe/gtq7ek.mp3" },
   { "title": "Como Tú Mujer", "url": "https://files.catbox.moe/d31sgk.mp3" },
   { "title": "La Hija de Nadie", "url": "https://files.catbox.moe/eu08zq.mp3" }
