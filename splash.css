@@ -1,113 +1,78 @@
 /* ===========================
-   SPLASH ULTRA NEÓN – OPCIÓN D
+   SPLASH ULTRA NEÓN — OPCIÓN D
    =========================== */
 
 .splash-bg {
   position: fixed;
-  top: 0; left: 0;
+  top: 0; 
+  left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center, #001028, #000010 80%);
+  background: #000012;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
-
-  /* Aparición tipo “portal” */
-  animation: splashIn 0.55s ease-out forwards;
-  overflow: hidden;
+  z-index: 99999;
+  transition: opacity 0.8s ease-out;
 }
 
-/* Logo principal */
+/* LOGO PRINCIPAL */
 .splash-logo {
-  width: 160px;
-  filter: drop-shadow(0 0 14px #00eaff);
-  
-  /* Latido suave */
+  width: 180px;
+  height: 180px;
+  border-radius: 22px;
   animation: splashPulse 1.3s infinite ease-in-out;
+  filter: drop-shadow(0 0 18px #00eaff);
   position: relative;
-  z-index: 10;
 }
 
-/* AURA que respira detrás del logo */
+/* Pulso del logo */
+@keyframes splashPulse {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px #00eaff);
+  }
+  50% {
+    transform: scale(1.18);
+    filter: drop-shadow(0 0 28px #0ff);
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px #00eaff);
+  }
+}
+
+/* Halo dinámico alrededor del logo */
 .splash-logo::after {
-  content: "";
-  position: absolute;
-  width: 180%;
-  height: 180%;
-  top: -40%;
-  left: -40%;
-  border-radius: 50%;
-  background: radial-gradient(rgba(0,255,255,0.25), transparent 70%);
-  animation: splashAura 1.8s infinite ease-in-out;
-  filter: blur(6px);
-  z-index: 1;
-  pointer-events: none;
-}
-
-/* Onda circular alrededor (warp) */
-.splash-bg::before {
   content: "";
   position: absolute;
   width: 160%;
   height: 160%;
+  top: -30%;
+  left: -30%;
   border-radius: 50%;
-  border: 2px solid rgba(0,255,255,0.25);
-  animation: warpRing 2.4s infinite ease-out;
-  filter: blur(2px);
-  pointer-events: none;
+  background: radial-gradient(rgba(0,255,255,0.25), transparent 70%);
+  animation: splashAura 2s infinite ease-in-out;
+  z-index: -1;
 }
 
-/* ==== ANIMACIONES ==== */
-
-/* Portal entrando */
-@keyframes splashIn {
-  0% {
-    opacity: 0;
-    transform: scale(1.25);
-    filter: blur(12px);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-    filter: blur(0px);
-  }
-}
-
-/* Logo que late */
-@keyframes splashPulse {
-  0% { transform: scale(1); opacity: 0.85; filter: drop-shadow(0 0 10px #00eaff); }
-  50% { transform: scale(1.13); opacity: 1; filter: drop-shadow(0 0 22px #00fff2); }
-  100% { transform: scale(1); opacity: 0.9; filter: drop-shadow(0 0 10px #00eaff); }
-}
-
-/* Aura detrás del logo */
 @keyframes splashAura {
-  0% { opacity: 0.25; transform: scale(1); }
-  50% { opacity: 0.55; transform: scale(1.3); }
-  100% { opacity: 0.25; transform: scale(1); }
-}
-
-/* Anillo expansivo tipo energía */
-@keyframes warpRing {
   0% {
     opacity: 0.25;
-    transform: scale(0.8);
+    transform: scale(1);
   }
-  70% {
-    opacity: 0.05;
+  50% {
+    opacity: 0.55;
+    transform: scale(1.3);
   }
   100% {
-    opacity: 0;
-    transform: scale(1.8);
+    opacity: 0.25;
+    transform: scale(1);
   }
 }
 
-/* Al ocultarse */
+/* OCULTAR SPLASH */
 .splash-hide {
   opacity: 0;
-  transform: scale(1.1);
-  filter: blur(6px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
   pointer-events: none;
 }
